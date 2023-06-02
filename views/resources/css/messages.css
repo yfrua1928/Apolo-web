@@ -1,0 +1,118 @@
+#header{
+    padding-top: 10px;
+    text-size-adjust: auto ;
+    background-color: #b0b7c9;
+    padding-bottom: 9px;
+}
+
+#headerRow{
+    align-items: center
+}
+#tittle{
+    padding-left: 10px;
+
+}
+
+
+#closeButton{
+    font-size: 12px;
+    background-color: #70a548;
+    border-color:#70a548 ;
+}
+
+#submitButton{
+    background-color: #70a548;
+    border-color:#70a548 ;
+}
+#exportButton{
+    background-color: #70a548;
+    border-color:#70a548 ;
+}
+
+
+
+#body{
+    padding-top: 20px;
+
+}
+
+#uploadLabel{
+    padding-left: 4px;
+    padding-bottom: 10px;
+}
+
+.tableHead{
+    align-items: center;
+    background-color: #eeeeee;
+}
+
+thead.tableHead {
+    vertical-align:middle;
+    text-align: center;
+    padding-right: 0px;
+    
+}
+
+
+table.dataTable thead th, table.dataTable thead td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    text-align: center !important;
+}
+
+.bg-primary{
+    background-color: #042a9c !important;
+    text-align: center;
+}
+
+
+.bg-secondary{
+    background-color: #0f76bf !important;
+    text-align: center;
+}
+
+.bg-success{
+    background-color: #70a548 !important;
+    text-align: center;
+}
+
+
+.bg-danger{
+    background-color: #c34646 !important;
+    text-align: center;
+}
+
+#editButton{
+    background-color: #eeeeee;
+}
+
+#deleteButton{
+    background-color: #eeeeee;
+}
+
+  
+/* .dataTables_wrapper .dataTables_paginate .active>.page-link {
+    background-color: #70a548;
+    border-color: #70a548;;
+} */
+
+  
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    /* background: none; */
+    background: #70a548 !important;
+    border-color: #70a548 !important;
+}
+
+/* .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: none;
+} */
+
+/* .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: none;
+  } */
+
+  .dataTables_wrapper .dataTables_length {
+    float: left;
+    padding-bottom: 10px !important;
+}
