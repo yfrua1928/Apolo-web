@@ -7,21 +7,22 @@ class LoginModel extends Model{
     }
 
     function validateLogin($user, $password) {
-        //session_start();
         $data = [];
-        $query = "SELECT `username`, `password`, `name`, `id` FROM `users` WHERE `username` = '$user' and `status` = 1";
+        $query = "SELECT `username`, `password`, `name`, `id`, `role` FROM `users` WHERE `username` = '$user' and `status` = 1";
         // var_dump($query);
         $this->db->connect();
         $result = $this->db->getConnection()->query($query);
         while ($row = $result->fetch_assoc()) {
             array_push($data, $row);
         }
+        var_dump($data);
         $this->db->closeConnec();
         if (!empty($data)){
            if (strcmp( $data[0]['password'], $password) == 0 ){
             $_SESSION['name'] = $data[0]['name'];
             $_SESSION['id'] = $data[0]['id'];
             $_SESSION['user'] = $data[0]['user_name'];
+            $_SESSION['rol'] = $data[0]['role'];
             return 1;
            }
         }

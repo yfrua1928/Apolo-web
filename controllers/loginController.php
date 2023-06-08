@@ -5,10 +5,6 @@ class Login extends Controller{
     function __construct(){
         parent::__construct();
         $_SESSION['logged_in'] = 0;
-
-        require 'models/loginModel.php';
-        $this->model = new LoginModel();
-
     }
 
     function register($user, $password){
