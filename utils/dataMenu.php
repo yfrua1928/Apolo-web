@@ -29,23 +29,23 @@ $funcionales = array(
         "module" => "users",
         "icon" => "bi bi-people",
         "title" => "Usuarios",
-        "permit" => [0,1]
+        "permit" => [0]
     ],
     "institutions" => [
         "module" => "institutions",
         "icon" => "bi bi-people",
         "title" => "Instituciones",
-        "permit" => [0,1]
+        "permit" => [0]
     ]
 );
 // Estos son los mudulos que salen despues del separador 'ADICIONAL'
 $adds = array(
     
-    "personal" => [
-        "module" => "profile",
-        "icon" => "bi bi-person-fill",
-        "title" => "Perfil",
-    ],
+    // "personal" => [
+    //     "module" => "profile",
+    //     "icon" => "bi bi-person-fill",
+    //     "title" => "Perfil",
+    // ],
     "logout" => [
         "module" => "logout",
         "icon" => "bi bi-box-arrow-in-right",

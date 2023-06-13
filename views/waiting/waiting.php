@@ -51,20 +51,7 @@ include 'views/menu.php';
                 <th scope="col">Institucion</th>
             </tr>
         </thead>
-        <!-- <tbody>
-            <?php foreach ($this->datos as $user) { ?>
-                <tr>
-                    <th scope="row"><a type="button" class=" btn btn-sm" id="<?php echo $user['document'] ?>_id" data-bs-target="#userModal"><?php echo $user["document"] ?></a> </th>
-                    <th scope="row"><?php echo $user['typeDocument']; ?></th>
-                    <td><?php echo $user['dateRegister']; ?></td>
-                    <td><?php echo $user['numberPatient']; ?></td>
-                    <td><?php echo $user['fullName']; ?></td>
-                    <td><?php echo $user['eps']; ?></td>
-                    <td><?php echo $user['speciality']; ?></td>
-                    <td><?php echo $user['idInstitution']; ?></td>
-                </tr>
-            <?php } ?>
-        </tbody> -->
+     
     </table>
 </div>
 
