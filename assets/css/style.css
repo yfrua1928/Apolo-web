@@ -9,6 +9,8 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"; 
+
 :root {
   scroll-behavior: smooth;
 }
@@ -42,8 +44,8 @@ h6 {
 # Main
 --------------------------------------------------------------*/
 #main {
-  margin-top: 10px;
-  padding: 20px 30px;
+  margin-top: 30px;
+  padding: 20px 20px;
   transition: all 0.3s;
 }
 
@@ -634,7 +636,7 @@ h6 {
 
   #main,
   #footer {
-    margin-left: 300px;
+    margin-left: 245px;
   }
 }
 
@@ -929,13 +931,13 @@ h6 {
   border: 0;
 }
 
-.dashboard .recent-sales .dataTable-top {
+/* .dashboard .recent-sales .dataTable-top {
   padding: 0 0 10px 0;
 }
 
 .dashboard .recent-sales .dataTable-bottom {
   padding: 10px 0 0 0;
-}
+} */
 
 /* Top Selling */
 .dashboard .top-selling {
@@ -1233,6 +1235,10 @@ h6 {
   color: #012970;
 }
 
+.bi-heart{
+  color: red;
+}
+
 /*--------------------------------------------------------------
 # Link Users List
 --------------------------------------------------------------*/
@@ -1280,4 +1286,8 @@ tbody .btn-sm:hover{
   flex-wrap: wrap;
   align-content: center;
   align-items: flex-start;
+}
+
+.btnCharge{
+  width: 15%;
 }

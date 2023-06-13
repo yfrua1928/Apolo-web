@@ -13,6 +13,7 @@ class Upload extends Controller{
     }
 
     function render(){
+        $this->view->pathJs = 'upload.js';
         $this->view->datos = $this->model->getFiles();
         $this->view->title = 'Cargar Documentos';
         $this->view->render('upload/upload');

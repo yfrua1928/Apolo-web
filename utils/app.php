@@ -3,7 +3,7 @@ class App {
 
     function __construct(){
         session_start();
-        var_dump($_SESSION);
+        
         $url = isset($_GET['url']) ? $_GET['url'] : null;
         $url = rtrim($url, "/");
         $url = explode("/", $url);
@@ -64,7 +64,6 @@ class App {
                 $controller->render();
                 break;
             case 'login':
-                
                 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] == 0){
                     $controller = $this->loginSession();
                     $controller->render();
@@ -89,6 +88,9 @@ class App {
                     session_unset();
                     session_destroy();
                     header('Location: '.constant('URL').'login');   
+                    break;
+                case 'filterWaiting':
+                    
                     break;
                 default:
                 $fileController = 'controllers/'.$url[0].'Controller.php';

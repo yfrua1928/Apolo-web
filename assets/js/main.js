@@ -1,14 +1,16 @@
-/**
-* Template Name: NiceAdmin
-* Updated: Mar 09 2023 with Bootstrap v5.2.3
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-(function() {
-  "use strict";
 
-  /**
+async function getToken() {
+  try {
+    let response = await axios.post("https://apolo.tramisalud.com/Api/Login");
+    return await response.data.accessToken;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+(() => {
+  "use strict";
+   /**
    * Easy selector helper function
    */
   const select = (el, all = false) => {
@@ -42,19 +44,20 @@
    * Sidebar toggle
    */
   if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
+    on('click', '.toggle-sidebar-btn', function (e) {
       select('body').classList.toggle('toggle-sidebar')
     })
   }
 
-  /**
-   * Search bar toggle
-   */
-  if (select('.search-bar-toggle')) {
-    on('click', '.search-bar-toggle', function(e) {
-      select('.search-bar').classList.toggle('search-bar-show')
-    })
-  }
+  document.addEventListener('click', function (event) {
+    if (!select('aside').contains(event.target)) {
+      if (!select('body').classList.contains('toggle-sidebar')
+        && !event.target.classList.contains('toggle-sidebar-btn')) {
+        select('body').classList.toggle('toggle-sidebar')
+      }
+    }
+  });
+
 
   /**
    * Navbar links active state on scroll
@@ -112,72 +115,9 @@
    * Initiate tooltips
    */
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
-
-  /**
-   * Initiate quill editors
-   */
-  if (select('.quill-editor-default')) {
-    new Quill('.quill-editor-default', {
-      theme: 'snow'
-    });
-  }
-
-  if (select('.quill-editor-bubble')) {
-    new Quill('.quill-editor-bubble', {
-      theme: 'bubble'
-    });
-  }
-
-  if (select('.quill-editor-full')) {
-    new Quill(".quill-editor-full", {
-      modules: {
-        toolbar: [
-          [{
-            font: []
-          }, {
-            size: []
-          }],
-          ["bold", "italic", "underline", "strike"],
-          [{
-              color: []
-            },
-            {
-              background: []
-            }
-          ],
-          [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
-          ],
-          [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
-          ],
-          ["direction", {
-            align: []
-          }],
-          ["link", "image", "video"],
-          ["clean"]
-        ]
-      },
-      theme: "snow"
-    });
-  }
 
   /**
    * Initiate TinyMCE Editor
@@ -185,107 +125,13 @@
   const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
 
-  tinymce.init({
-    selector: 'textarea.tinymce-editor',
-    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-    editimage_cors_hosts: ['picsum.photos'],
-    menubar: 'file edit view insert format tools table help',
-    toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    toolbar_sticky: true,
-    toolbar_sticky_offset: isSmallScreen ? 102 : 108,
-    autosave_ask_before_unload: true,
-    autosave_interval: '30s',
-    autosave_prefix: '{path}{query}-{id}-',
-    autosave_restore_when_empty: false,
-    autosave_retention: '2m',
-    image_advtab: true,
-    link_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_class_list: [{
-        title: 'None',
-        value: ''
-      },
-      {
-        title: 'Some class',
-        value: 'class-name'
-      }
-    ],
-    importcss_append: true,
-    file_picker_callback: (callback, value, meta) => {
-      /* Provide file and text for the link dialog */
-      if (meta.filetype === 'file') {
-        callback('https://www.google.com/logos/google.jpg', {
-          text: 'My text'
-        });
-      }
-
-      /* Provide image and alt text for the image dialog */
-      if (meta.filetype === 'image') {
-        callback('https://www.google.com/logos/google.jpg', {
-          alt: 'My alt text'
-        });
-      }
-
-      /* Provide alternative source and posted for the media dialog */
-      if (meta.filetype === 'media') {
-        callback('movie.mp4', {
-          source2: 'alt.ogg',
-          poster: 'https://www.google.com/logos/google.jpg'
-        });
-      }
-    },
-    templates: [{
-        title: 'New Table',
-        description: 'creates a new table',
-        content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
-      },
-      {
-        title: 'Starting my story',
-        description: 'A cure for writers block',
-        content: 'Once upon a time...'
-      },
-      {
-        title: 'New list with dates',
-        description: 'New List with dates',
-        content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
-      }
-    ],
-    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
-    image_caption: true,
-    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-    noneditable_class: 'mceNonEditable',
-    toolbar_mode: 'sliding',
-    contextmenu: 'link image table',
-    skin: useDarkMode ? 'oxide-dark' : 'oxide',
-    content_css: useDarkMode ? 'dark' : 'default',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-  });
-
   /**
    * Initiate Bootstrap validation check
    */
   var needsValidation = document.querySelectorAll('.needs-validation')
   Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
           event.preventDefault()
           event.stopPropagation()
@@ -295,21 +141,14 @@
       }, false)
     })
 
-  /**
-   * Initiate Datatables
-   */
-  const datatables = select('.datatable', true)
-  datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable);
-  })
-  
+
   /**
    * Autoresize echart charts
    */
   const mainContainer = select('#main');
   if (mainContainer) {
     setTimeout(() => {
-      new ResizeObserver(function() {
+      new ResizeObserver(function () {
         select('.echart', true).forEach(getEchart => {
           echarts.getInstanceByDom(getEchart).resize();
         })
@@ -318,3 +157,254 @@
   }
 
 })();
+var espanol = {
+  "emptyTable": "Tabla Vacia",
+  "loadingRecords": "Cargando...",
+  "processing": "Procesando...",
+  "select": {
+    "cells": {
+      "_": "%d celdas seleccionadas",
+      "1": "1 celda seleccionada"
+    },
+    "columns": {
+      "_": "%d columnas seleccionadas",
+      "1": "1 columna seleccionada"
+    },
+    "rows": {
+      "1": "Fila seleccionada",
+      "_": "Filas Seleccionadas"
+    }
+  },
+  "autoFill": {
+    "cancel": "Cancelar",
+    "fill": "Llenar",
+    "fillHorizontal": "Llenar celdas horizontalmente",
+    "fillVertical": "Llenar celdas verticalemente",
+    "info": "Información"
+  },
+  "searchBuilder": {
+    "conditions": {
+      "date": {
+        "after": "Después",
+        "before": "Antes",
+        "between": "Entre",
+        "empty": "Vacío",
+        "equals": "Igual",
+        "not": "No",
+        "notBetween": "No Entre",
+        "notEmpty": "No Vacío"
+      },
+      "number": {
+        "between": "Entre",
+        "empty": "Vacío",
+        "equals": "Igual",
+        "gt": "Mayor",
+        "gte": "Mayor o Igual",
+        "lt": "Menor",
+        "lte": "Menor o Igual",
+        "not": "No",
+        "notBetween": "No Entre",
+        "notEmpty": "No vacío"
+      },
+      "string": {
+        "contains": "Contine",
+        "empty": "Vacío",
+        "endsWith": "Termina en",
+        "equals": "Iguales",
+        "not": "No",
+        "notEmpty": "No Vacío",
+        "startsWith": "Empieza en",
+        "notContains": "No Contiene",
+        "notStartsWith": "No empieza en",
+        "notEndsWith": "No finaliza en"
+      },
+      "array": {
+        "equals": "Iguales",
+        "empty": "Vacío",
+        "contains": "Contiene",
+        "not": "No",
+        "notEmpty": "No Vacío",
+        "without": "Con"
+      }
+    },
+    "add": "Agragar condición",
+    "button": {
+      "_": "Creador de búsquedas (%d)",
+      "0": "Creador de búsquedas"
+    },
+    "clearAll": "Quitar filtro",
+    "data": "Datos",
+    "logicAnd": "Y",
+    "logicOr": "O",
+    "value": "Valor",
+    "condition": "Condición",
+    "deleteTitle": "Eliminar regla",
+    "leftTitle": "Izquierda",
+    "rightTitle": "Derecha",
+    "title": {
+      "0": "Generador de Consultas",
+      "_": "Generador de Consultas (%d)"
+    }
+  },
+  "searchPanes": {
+    "clearMessage": "Borrar Filtro",
+    "collapseMessage": "desplegar todo",
+    "loadMessage": "Cargando informacion",
+    "showMessage": "Mostrar todos",
+    "title": "Filtros Activos - %d",
+    "collapse": {
+      "0": "Paneles de Búsqueda",
+      "_": "Paneles de Búsqueda (%d)"
+    },
+    "count": "{total}",
+    "countFiltered": "{shown} ({total})",
+    "emptyPanes": "No hay información"
+  },
+  "buttons": {
+    "collection": "Colección",
+    "colvis": "Visibilidad Columna",
+    "colvisRestore": "Restaurar Visibilidad",
+    "copy": "Copiar",
+    "copySuccess": {
+      "_": "Copiado con exito",
+      "1": "Fila copiada con exito"
+    },
+    "copyTitle": "Tabla Copiada",
+    "csv": "CSV",
+    "excel": "Excel",
+    "pageLength": {
+      "_": "ver %d filas",
+      "-1": "Ver todas las Filas",
+      "1": "Ver una fila"
+    },
+    "pdf": "PDF",
+    "print": "Imprimir",
+    "copyKeys": "Presione Inicio + C para copiar la información de la tabla.  Para Cancelar hacer click en este mensaje para o ESC",
+    "createState": "Crear estado",
+    "removeAllStates": "Eliminar todos los estados",
+    "removeState": "Eliminar",
+    "renameState": "Renombrar",
+    "savedStates": "Estados Guardados",
+    "stateRestore": "Estado %d",
+    "updateState": "Actualizar"
+  },
+  "decimal": ".",
+  "datetime": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "seconds": "Segundos",
+    "unknown": "Desconocido",
+    "months": {
+      "0": "Enero",
+      "1": "Febrero",
+      "10": "Noviembre",
+      "11": "Diciembre",
+      "2": "Marzo",
+      "3": "Abril",
+      "4": "Mayo",
+      "5": "Junio",
+      "6": "Julio",
+      "7": "Agosto",
+      "8": "Septiembre",
+      "9": "Octubre"
+    },
+    "weekdays": {
+      "0": "Dom",
+      "1": "Lun",
+      "2": "Mar",
+      "3": "Mié",
+      "4": "Jue",
+      "5": "Vie",
+      "6": "Sáb"
+    },
+    "amPm": [
+      "am",
+      "pm"
+    ]
+
+  },
+  "editor": {
+    "close": "Cerrar",
+    "create": {
+      "button": "Nuevo",
+      "submit": "Crear",
+      "title": "Crear nueva entrada"
+    },
+    "edit": {
+      "button": "Editar",
+      "submit": "Actualizar",
+      "title": "Editar Registro"
+    },
+    "remove": {
+      "button": "Borrar",
+      "submit": "Borrar",
+      "title": "Borrar",
+      "confirm": {
+        "_": "Esta seguro de eliminar %d registros",
+        "1": "Esta seguro de eliminar 1 registro"
+      }
+    },
+    "multi": {
+      "info": "Los elementos seleccionados contienen diferentes valores para esta entrada. Para editar y configurar todos los elementos de esta entrada en el mismo valor, haga clic o toque aquí, de lo contrario, conservar sus valores individuales.",
+      "noMulti": "Múltiples valores",
+      "title": "Valores multiples",
+      "restore": "Deshacer cambios"
+    },
+    "error": {
+      "system": "Ha ocurrido un error del sistema ( Mas Información)"
+    }
+  },
+
+  "stateRestore": {
+    "removeSubmit": "Eliminar",
+    "creationModal": {
+      "button": "Crear",
+      "order": "Ordenar",
+      "paging": "Paginado",
+      "scroller": "Posición desplazamiento",
+      "search": "Buscar",
+      "select": "Seleccionar",
+      "columns": {
+        "search": "Búsqueda columnas",
+        "visible": "Visibilidad de columa"
+      },
+      "name": "Nombre:",
+      "searchBuilder": "Generador de Consultas",
+      "title": "Crear Nuevo Estado",
+      "toggleLabel": "Incluir:"
+    },
+    "renameButton": "Renombrar",
+    "duplicateError": "Ya existe un estado con este nombre",
+    "emptyError": "El nombre no puede estar vacío",
+    "emptyStates": "Estado sin Guardar",
+    "removeConfirm": "Esta seguro de eliminar el estado %d?",
+    "removeError": "Error al eliminar el estado",
+    "removeJoiner": "y",
+    "removeTitle": "Eliminar Estado",
+    "renameLabel": "Nuevo nombre para %s",
+    "renameTitle": "Renombrar Estado"
+  },
+  "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+  "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+
+  "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
+  "lengthMenu": "Mostrar _MENU_ Entradas",
+  "paginate": {
+    "first": "Primero",
+    "last": "Último",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  },
+  "zeroRecords": "No se encontro información",
+  "aria": {
+    "sortAscending": "Activar para ordenar ascendente",
+    "sortDescending": "Activar para ordenar descendente"
+  },
+  "infoThousands": ",",
+  "searchPlaceholder": "Busqueda en tabla",
+  "search": "Buscar:",
+  "thousands": ",",
+  "infoPostFix": ""
+};

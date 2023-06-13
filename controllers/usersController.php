@@ -18,6 +18,7 @@ class Users extends Controller{
     }
 
     function render(){
+        $this->view->pathJs = 'modal.js';
         $this->view->datos = $this->model->getUsers();
         $this->view->title = 'Usuarios';
         $this->view->render('users/users');

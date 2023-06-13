@@ -124,13 +124,13 @@ function getDataRegisters() {
             total = data.length;
             data.forEach((item) => {
                 switch (item.Type) {
-                    case "ad":
+                    case "AD":
                         ad++;
                         break;
-                    case "and":
+                    case "AND":
                         and++;
                         break;
-                    case "c":
+                    case "C":
                         confir++;
                         break;
                     default:
