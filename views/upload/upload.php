@@ -26,6 +26,7 @@ include 'views/menu.php';
             </tr>
         </thead>
     </table>
+    
 <?php
 include 'views/upload/modalUpload.php';
 include 'views/footer.php';

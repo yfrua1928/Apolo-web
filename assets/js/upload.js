@@ -147,6 +147,9 @@ $(document).ready(function () {
         //                 sonUp.style.opacity = '0';
         //                 sonUp.style.transition = 'all 500ms ease';
         //             }
+        //                  $('#cancel').prop('disabled', true);
+        //                  $('#save').prop('disabled', true);
+        //                  $('#export').prop('disabled', true);
         //         })
         //         .catch(err => {
         //             alert("Muestre este error al administrado: " + err);

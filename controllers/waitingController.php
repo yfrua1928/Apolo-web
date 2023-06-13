@@ -7,6 +7,7 @@ class Waiting extends Controller{
     }
 
     function render(){
+        $this->view->pathJs = 'waiting.js';
         $this->view->institutions = $this->model->getInstitutions();
         $this->view->datos = $this->model->getDatos();
         $this->view->title = 'Lista de Espera';
