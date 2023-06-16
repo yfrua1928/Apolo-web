@@ -49,10 +49,8 @@ $(document).ready(function () {
         a.remove();
         window.URL.revokeObjectURL(url);
     });
-
     // Capturar Informacion del Archivo
     $('#fileImport').change(e => { file = e.target.files[0] });
-
     // Enviar Informacion del Archivo a la web
     $('#charge').click(() => {
 
@@ -98,23 +96,17 @@ $(document).ready(function () {
             nameFile = file.name;
             $('#exampleModalLabel').html("Carga de Archivo: " + nameFile);
 
-            $('#cancel').prop('disabled', false);
-            if (registers.length > 0)$('#save').prop('disabled', false);
-            $('#export').prop('disabled', false);
-
             fileModal.show();
         } else {
             alert('Porfavor cargue un archivo valido');
         }
 
     })
-
     // Cerrar el modal y Vaciar datos
     $("#cancel").click(CloseModal);
-
     // Guardar y enviar registros a API Apolo
     $('#save').click(() => {
-        const urlFile = `https://apolo.tramisalud.com/Api/message/insert?token=${token}`
+        const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
         $('#cancel').prop('disabled', true);
         $('#save').prop('disabled', true);
         $('#export').prop('disabled', true);
@@ -139,7 +131,7 @@ $(document).ready(function () {
                     console.log(data.data)
                     if (data.data.Status === "0001") {
                         // aqui recarga la ventana
-                        alert("Guardado Correctamente");
+                        alert(data.data.Message);
                         location.reload();
                     } else {
                         alert("Error al guardar");
@@ -147,47 +139,77 @@ $(document).ready(function () {
                         // sonUp.style.opacity = '0';
                         // sonUp.style.transition = 'all 500ms ease';
                     }
-                    $('#cancel').prop('disabled', true);
-                    $('#save').prop('disabled', true);
-                    $('#export').prop('disabled', true);
+                    $('#cancel').prop('disabled', false);
+                    $('#save').prop('disabled', false);
+                    $('#export').prop('disabled', false);
                 })
                 .catch(err => {
                     alert("Muestre este error al administrado: " + err);
                     // sonUp.style.visibility = 'hidden';
                     // sonUp.style.opacity = '0';
                     // sonUp.style.transition = 'all 500ms ease';
-                    $('#cancel').prop('disabled', true);
-                    $('#save').prop('disabled', true);
-                    $('#export').prop('disabled', true);
+                    $('#cancel').prop('disabled', false);
+                    $('#save').prop('disabled', false);
+                    $('#export').prop('disabled', false);
                 });
     });
+    // Descargar Archivos Malos
+    $('#export').on('click',()=>{
+        $('#cancel').prop('disabled', true);
+        $('#save').prop('disabled', true);
+        $('#export').prop('disabled', true);
+
+        alert("Solo se puede exportar los fallos de este archivo una vez");
+        arrayObjToCsv(elementsFail[0], "Fallos por registro");
+
+        $('#cancel').prop('disabled', false);
+        $('#save').prop('disabled', false);
+        
+    })
 
     function validate(data) {
         let countGood = 0;
         let countBad = 0;
         data.split("\r\n").forEach(items => {
             let item = items.split(";");
-            if (item.includes("") || item.length != 11) {
-                elementsFail.push(item);
-                countBad++;
-            } else {
-                if (!item.includes("Documento") && !item.includes("document")) {
-                    registers.push({
-                        "cellPhone": item[0],
-                        "typeDocument": item[1],
-                        "document": item[2],
-                        "name": item[3],
-                        "idInstitute": item[4],
-                        "dateAppointment": item[5],
-                        "appointmentHour": item[6],
-                        "medic": item[7],
-                        "speciality": item[8],
-                        "autorization": item[9],
-                        "Type": item[10],
-                    });
-                    countGood++;
-                };
+            var count = 0;
+            var total = 0;
+            
+            if (item.length > 1){
+                for (let a in item){
+                    if(item[a] === ""){
+                        count++; 
+                    }
+                    total++;
+                }
+                
             }
+            if (total > 0){
+                if (total < 11 || total <= 11 && count > 0 || total == 12 && count > 1) {
+                    elementsFail.push(item);
+                    countBad++;
+                } else {
+                    if (!item.includes("Documento") && !item.includes("document")) {
+    
+                        registers.push({
+                            "cellPhone": item[0],
+                            "typeDocument": item[1],
+                            "document": item[2],
+                            "name": item[3],
+                            "idInstitute": item[4],
+                            "dateAppointment": item[5],
+                            "appointmentHour": item[6],
+                            "medic": item[7],
+                            "speciality": item[8],
+                            "autorization": item[9],
+                            "Type": item[10],
+                            "cups": (item[11] == "" || item[11] == undefined || item[11] == null)?0:item[11]
+                        });
+                        countGood++;
+                    };
+                }
+            }
+            
         });
         $('#process').val(countGood + countBad);
         $('#success').val(countGood);
@@ -195,7 +217,7 @@ $(document).ready(function () {
 
         $('#cancel').prop('disabled', false);
         if (registers.length > 0)$('#save').prop('disabled', false);
-        $('#export').prop('disabled', false);
+        if (elementsFail.length > 0)$('#export').prop('disabled', false);
     }
 
     function CloseModal() {

@@ -1,6 +1,5 @@
-var token;
-
 $('document').ready(function() {
+    var token;
     
     const modalito = $('#registerModal'); 
     const registerModal = new bootstrap.Modal(modalito);
@@ -15,6 +14,7 @@ $('document').ready(function() {
 
 
     var registers = new Array();
+    var reesend = new Array();
     var id = undefined;
 
     // Tabla Principal
@@ -42,15 +42,24 @@ $('document').ready(function() {
         
         modalTable.on('draw.dt', function(){
             const btnReg = document.querySelectorAll(".btn-sm");
-            console.log(btnReg);
             btnReg.forEach((boton) => {
                 boton.addEventListener("click", getDataRegisters);
             });
         })
-        
-        
-        console.log(token)
+
     })
+
+    $('#send').on('click',() => {
+        $('#send').prop('disabled', true);
+        $('#export').prop('disabled', true);
+        $('#update').prop('disabled', true);
+        $('#exit').prop('disabled', true);
+        alert('Se va reenviar los datos, por favor no cierre esta ventana.');
+
+        let fileName = 'reenvio-'+moment().format('L-H:mm:ss')
+               
+        
+    });
 
     function getDataRegisters() {
 
@@ -66,7 +75,7 @@ $('document').ready(function() {
         var confir = 0;
         var nothing = 0;
     
-        let urlRegisters = `https://apolo.tramisalud.com/Api/message/registers?identifier=${id}&token=${token}`;
+        let urlRegisters = `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${id}&token=${token}`;
         console.log(urlRegisters);
     
         axios({
@@ -75,6 +84,7 @@ $('document').ready(function() {
             })
             .then((response) => response.data)
             .then((data) => {
+                reesend.push(data);
                 console.log(data);
                 total = data.length;
                 data.forEach((item) => {
@@ -97,6 +107,8 @@ $('document').ready(function() {
                     tr.innerHTML = createRowRegister(item);
                     tbody.appendChild(tr);
                     registers.push(item);
+                }).catch((error) => {
+                    alert(error.message);
                 });
                 console.log(total);
     
@@ -233,7 +245,7 @@ $('document').ready(function() {
     });
         
     exportar.addEventListener("click", () => {
-        arrayObjToCsv(registers)
+        arrayObjToCsv(registers, "Cargamasiva");
         console.log("Hola Mundo!");
     })
 

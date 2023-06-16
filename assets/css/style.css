@@ -1291,3 +1291,8 @@ tbody .btn-sm:hover{
 .btnCharge{
   width: 15%;
 }
+
+.resp{
+  table-layout: auto !important;
+  width: 100% !important;
+}

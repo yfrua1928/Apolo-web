@@ -8,7 +8,7 @@ async function getToken() {
   }
 }
 
-function arrayObjToCsv(ar) {
+function arrayObjToCsv(ar, name) {
   //comprobamos compatibilidad
   if (window.Blob && (window.URL || window.webkitURL)) {
       var contenido = "",
@@ -37,7 +37,7 @@ function arrayObjToCsv(ar) {
               save.href = event.target.result;
               save.target = 'blank';
               //aquí le damos nombre al archivo
-              save.download = "log" + d.getDate() + "" + (d.getMonth() + 1) + "" + d.getFullYear() + ".csv";
+              save.download = name + d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + ".csv";
               try {
                   //creamos un evento click
                   clicEvent = new MouseEvent('click', {

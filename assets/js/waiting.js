@@ -18,38 +18,49 @@ $(document).ready(function () {
     $('#institution').on('change',(e) => {
         if ( parseInt(e.target.value) !== 0){
             $('#dateInitial').prop('disabled', false);
+            $('#dateFinal').prop('disabled', false);
         }else{
             $('#dateInitial').prop('disabled', true);
             $('#dateInitial').val("");
+
+            $('#dateFinal').prop('disabled', true);
+            $('#dateFinal').val("");
             
         }
     })
 
     $('#clear').on('click',() => {
         $('#dateInitial').val("");
+        $('#dateFinal').val("");
         $('#dateInitial').prop('disabled', true);
+        $('#dateFinal').prop('disabled', true);
         $('#institution').val(0)
     });
 
     $('#filter').on('click', (e) => {
-        registers = [];
-        console.log('Hola mundo');
-        console.log($('#dateInitial').val()===""); 
-        validateUrl();
-        waiting.destroy();
-        $('tbody').remove();
-        createTable(token);
+        let date =  $('#dateInitial').val();
+        let date2 =  $('#dateFinal').val();
+
+        if (date2 !== '' && date == '' || moment( date ).isAfter( date2 )){
+            alert("La fecha Final no puede ser superior a la fecha inicial, vuelva a validar la informacion");
+            
+        }else{
+            registers = [];
+            validateUrl();
+            waiting.destroy();
+            $('tbody').remove();
+            createTable(token);
+        }
+        
     });
 
     $('#download').on('click', e => {
-        console.log('Hola descarga');
-        arrayObjToCsv(registers[0])
+        arrayObjToCsv(registers[0], "Lista de Espera");
     });
 
     function createTable(token) {
         axios.get(`https://apolo-pruebas.tramisalud.com/Api/message/waitingList?token=${token}${url}`).then(response => {
             registers.push(response.data);
-            console.log(response.data);
             waiting = $('#waiting').DataTable({
                 language: espanol,
                 data: response.data,
@@ -67,37 +78,40 @@ $(document).ready(function () {
                     // {data: 'mainPhone'},
                     // {data: 'secondPhone'},
                     { data: 'eps' },
-                    // {data: 'numberAuthorization'},
-                    // {data: 'authorizationDateExpire'},
-                    // {data: 'typeAppointment'},
+                    {data: 'numberAuthorization'},
+                    {data: 'authorizationDateExpire'},
+                    {data: 'typeAppointment'},
                     { data: 'speciality' },
                     { data: 'idInstitution' },
                 ],
-                columnsDefs: [],
-                order: [[1, "desc"]]
-            })
+                order: [[1, "desc"]],
+                columnDefs: [
+                    { width: "8%", targets: 1 },
+                    { width: "2%", targets: 3 },
+                    { width: "2%", targets: 4 }                    
+                  ]
+            });
             $('#download').prop('disabled', false);
-        }).catch(err){
-            alert(err.message);
-        };
+        })
     }
 
     function validateUrl(){
         let inst = parseInt($('#institution').val());
-        let date =  $('#dateInitial').val()
+        let date =  $('#dateInitial').val();
+        let date2 =  $('#dateFinal').val();
 
         if ( inst == 0 && date === "") {
             url = '';
             alert('Sino selecciona algo se mostraran todas las intituciones');
         }
 
-        if (inst !== 0 && date === ""){
+        if (inst !== 0 && date === "" && date2 === ""){
             url = `&idInstitute=${inst}`;
         }else{
-            url = `&idInstitute=${inst}&date=${date}`;
-            console.log(date);
+            if (date2 == '')date2 = date
+            url = `&idInstitute=${inst}&startDate=${date}&endDate=${date2}`;
         }
-        console.log(url);
+        // console.log(url);
     }
     
 })

@@ -5,6 +5,7 @@
             <div class="modal-header">
                 <h3 class="modal-title" id="registerTitle"></h3>
                 <div class="col-auto">
+                    <button id="send" type="button" class="btn btn-success" data-bs-toggle="tooltip" data-bs-title="Reenviar"><i class="bi bi-send"></i></button>
                     <button id="export" type="submit" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-title="Descargar Documento"><i class="bi bi-cloud-download"></i></button>
                     <button id="update" type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Actualizar Tabla"><i class="bi bi-arrow-clockwise"></i></button>
                     <button id="exit" type="button" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-title="Salir"><i class="bi bi-door-open"></i></button>
