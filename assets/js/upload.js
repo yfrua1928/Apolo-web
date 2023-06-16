@@ -16,8 +16,11 @@ $(document).ready(function () {
         $('#files').DataTable({
             language: espanol,
             ajax: {
-                url: 'https://apolo.tramisalud.com/Api/message/files?token=' + data,
-                dataSrc: ''
+                url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
+                dataSrc: '',
+                error: function (xhr, error, code) {
+                    alert("Inconsistencia al cargar la tabla. Error numero: "+xhr.status);
+                },
             },
             columns: [
                 {
@@ -127,36 +130,36 @@ $(document).ready(function () {
             "idUser": $('#identifier').val(),
             "data": registers
         })
-
-        // axios({
-        //         method: "POST",
-        //         url: urlFile,
-        //         data: JSON.stringify(data),
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //     }).then(data => {
-        //             console.log(data.data)
-        //             if (data.data.Status === "0001") {
-        //                 // aqui recarga la ventana
-        //                 alert("Guardado Correctamente");
-        //                 location.reload();
-        //             } else {
-        //                 alert("Error al guardar");
-        //                 sonUp.style.visibility = 'hidden';
-        //                 sonUp.style.opacity = '0';
-        //                 sonUp.style.transition = 'all 500ms ease';
-        //             }
-        //                  $('#cancel').prop('disabled', true);
-        //                  $('#save').prop('disabled', true);
-        //                  $('#export').prop('disabled', true);
-        //         })
-        //         .catch(err => {
-        //             alert("Muestre este error al administrado: " + err);
-        //             sonUp.style.visibility = 'hidden';
-        //             sonUp.style.opacity = '0';
-        //             sonUp.style.transition = 'all 500ms ease';
-        //         });
+        console.log(JSON.stringify(data));
+        axios.post(urlFile, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(data => {
+                    console.log(data.data)
+                    if (data.data.Status === "0001") {
+                        // aqui recarga la ventana
+                        alert("Guardado Correctamente");
+                        location.reload();
+                    } else {
+                        alert("Error al guardar");
+                        // sonUp.style.visibility = 'hidden';
+                        // sonUp.style.opacity = '0';
+                        // sonUp.style.transition = 'all 500ms ease';
+                    }
+                    $('#cancel').prop('disabled', true);
+                    $('#save').prop('disabled', true);
+                    $('#export').prop('disabled', true);
+                })
+                .catch(err => {
+                    alert("Muestre este error al administrado: " + err);
+                    // sonUp.style.visibility = 'hidden';
+                    // sonUp.style.opacity = '0';
+                    // sonUp.style.transition = 'all 500ms ease';
+                    $('#cancel').prop('disabled', true);
+                    $('#save').prop('disabled', true);
+                    $('#export').prop('disabled', true);
+                });
     });
 
     function validate(data) {

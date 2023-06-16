@@ -5,15 +5,15 @@ include 'views/menu.php';
 ?>
 
 <form class="row">
-    <!-- <div class="col-auto">
-        <label class="form-label" for="dateInitial">Fecha Inicial</label>
-        <input class="form-control" type="date" name="dateInitial">
+     <div class="col-2">
+        <label class="form-label" for="dateInitial">Fecha Registro</label>
+        <input class="form-control" type="date" name="dateInitial" id="dateInitial" disabled>
     </div>
-    <div class="col-auto">
+    <!--<div class="col-auto">
         <label class="form-label" for="dateFinal">Fecha Final</label>
         <input class="form-control" type="date" id="dateFinal" name="dateFinal">
     </div> -->
-    <div class="col-auto">
+    <div class="col-2">
         <label class="form-label" for="institution">Institucion</label>
         <select class="form-control" id="institution" name="institution">
             <option value=0 selected>Seleccione</option>
@@ -22,8 +22,13 @@ include 'views/menu.php';
             <?php } ?>
         </select>
     </div>
-    <div class="col-auto pt-2">
+    <div class="col-3 pt-2">
         <button id="filter" type="button" class="btn btn-outline-primary mt-4">Filtrar</button>
+        <button id="clear" type="button" class="btn btn-outline-danger mt-4">Limpiar</button>
+    </div>
+    
+    <div class="col-5 pt-2 d-flex justify-content-end">
+        <button id="download" type="button" class="btn btn-outline-success mt-4" disabled>Descargar Busqueda</button>
     </div>
 </form>
 <hr>
