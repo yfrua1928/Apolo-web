@@ -76,8 +76,6 @@ $('document').ready(function() {
             registers = response.filter(item => {
                 return item.status == '1'
             });
-            // console.log(respomse);
-
             info = {
                 "identifier": uuid.v4(),
                 "nameFile": 'reenvio-'+idGlobal+'-'+moment().format('L-H:mm:ss'),

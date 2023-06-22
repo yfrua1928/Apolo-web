@@ -29,7 +29,7 @@
                         <input id="ad" class="form-control" type="text" readonly>
                     </div>
                     <div class="col-auto pe-1 pt-1">
-                        <label for="and">Agenda No Disposible</label>
+                        <label for="and">Agenda No Disponible</label>
                     </div>
                     <div class="col-1 ps-0 input-group-sm">
                         <input id="and" class="form-control" type="text" readonly>
