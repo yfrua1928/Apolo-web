@@ -14,6 +14,7 @@ if( ! preg_match( '/[.]/', $url_path ) ) {
     include( 'index.php');
     return;
 }
+
 if( preg_match( '/[.css]/', $url_path ) ) {
     header("Content-type: text/css");
     include( $url_path );

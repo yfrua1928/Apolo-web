@@ -10,7 +10,7 @@ class Home extends Controller{
         $this->view->datosAnd = $this->model->getResultAnd();
         $this->view->datosAd = $this->model->getResultAd();
         $this->view->datosXh = $this->model->getResultXHospital();
-        $this->view->title = 'Home';
+        $this->view->title = 'Dashboard';
         $this->view->render('home/home');
     }
 }

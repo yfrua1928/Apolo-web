@@ -51,7 +51,6 @@ class userController{
 
     public function logoutAction(){
         session_destroy();
-
         header("refresh:1;url=".PATH_ROOT_PROJECT);
     }
 }
