@@ -34,7 +34,7 @@ include 'views/menu.php';
 </form>
 <hr>
 <div class="row">
-    <table id="waiting" class="resp table datatable table-hover ">
+    <table id="waiting" class="resp table datatable table-hover">
         <thead>
             <tr>
                 <th scope="col">id</th>

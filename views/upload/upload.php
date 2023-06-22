@@ -17,11 +17,13 @@ include 'views/menu.php';
 </div>
 <div>
     <pre id="contenido"></pre>
-    <table id="files" class="table display">
+    <table id="files" class="table display resp table-hover">
         <thead>
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Nombre</th>
+                <th scope="col">Usuario que carga</th>
+                <th scope="col">Institucion</th>
                 <th scope="col">Fecha Creacion</th>
             </tr>
         </thead>

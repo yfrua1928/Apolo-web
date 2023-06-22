@@ -37,7 +37,6 @@
 
   <main>
     <div class="container">
-
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
           <div class="row justify-content-center">
@@ -55,6 +54,9 @@
                 <div class="card-body">
 
                   <div class="pt-4 pb-2">
+                    <?php if( isset($_COOKIE['error']) ){?>
+                      <p class="text-center mb-0 reto"><strong><?php echo $_COOKIE['error']; ?></strong></p>
+                    <?php }?>
                     <h5 class="card-title text-center pb-0 fs-4">Inicia Sesion con tu Cuenta</h5>
                     <p class="text-center small">Ingresa tu nombre de usuario y contraseña para iniciar sesion</p>
                   </div>

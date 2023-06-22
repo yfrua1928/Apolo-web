@@ -28,10 +28,14 @@ $(document).ready(function () {
                         return `<strong>${data}</strong>`
                     }
                 },
-                { data: "name" },
-                { data: "dateCreate" }
-            ]
+                {data: "nameFile" },
+                {data: "nameUsers"},
+                {data: "nameInstituteAsigned"},
+                {data: "dateCreate" }
+            ],
+            order:[[4, "desc"]],
         })
+        // fileModal.show();
     })
 
     // Descargar Plantilla
@@ -49,14 +53,14 @@ $(document).ready(function () {
         a.remove();
         window.URL.revokeObjectURL(url);
     });
+
     // Capturar Informacion del Archivo
     $('#fileImport').change(e => { file = e.target.files[0] });
+
     // Enviar Informacion del Archivo a la web
     $('#charge').click(() => {
-
-        $('#cancel').prop('disabled', true);
-        $('#save').prop('disabled', true);
-        $('#export').prop('disabled', true);
+        fileModal.show();
+        butonsDisabled(true);
 
         var allowedExtensions = /(.csv)$/i;
         if (allowedExtensions.exec($('#fileImport').val())) {
@@ -64,7 +68,6 @@ $(document).ready(function () {
             reader.onload = () => {
                 validate(reader.result);
                 modalTable = $('#modalFile').DataTable({
-                    "bAutoWidth": false,
                     "language": espanol,
                     "data": registers,
                     "columns": [
@@ -95,8 +98,7 @@ $(document).ready(function () {
             reader.readAsText(file);
             nameFile = file.name;
             $('#exampleModalLabel').html("Carga de Archivo: " + nameFile);
-
-            fileModal.show();
+            $('#sonUp').addClass("quitCharge");
         } else {
             alert('Porfavor cargue un archivo valido');
         }
@@ -106,10 +108,9 @@ $(document).ready(function () {
     $("#cancel").click(CloseModal);
     // Guardar y enviar registros a API Apolo
     $('#save').click(() => {
+        $('#sonUp').removeClass('quitCharge');
         const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
-        $('#cancel').prop('disabled', true);
-        $('#save').prop('disabled', true);
-        $('#export').prop('disabled', true);
+        butonsDisabled(true);
 
         let fileName = () => {
             let parts = nameFile.split(".");
@@ -122,7 +123,6 @@ $(document).ready(function () {
             "idUser": $('#identifier').val(),
             "data": registers
         })
-        console.log(JSON.stringify(data));
         axios.post(urlFile, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json'
@@ -133,31 +133,21 @@ $(document).ready(function () {
                         // aqui recarga la ventana
                         alert(data.data.Message);
                         location.reload();
-                    } else {
-                        alert("Error al guardar");
-                        // sonUp.style.visibility = 'hidden';
-                        // sonUp.style.opacity = '0';
-                        // sonUp.style.transition = 'all 500ms ease';
-                    }
-                    $('#cancel').prop('disabled', false);
-                    $('#save').prop('disabled', false);
-                    $('#export').prop('disabled', false);
+                    } 
+                    alert(data.data.Message);   
+                    butonsDisabled(false);
+                    $('#sonUp').addClass('quitCharge');
+                   
                 })
                 .catch(err => {
                     alert("Muestre este error al administrado: " + err);
-                    // sonUp.style.visibility = 'hidden';
-                    // sonUp.style.opacity = '0';
-                    // sonUp.style.transition = 'all 500ms ease';
-                    $('#cancel').prop('disabled', false);
-                    $('#save').prop('disabled', false);
-                    $('#export').prop('disabled', false);
+                    butonsDisabled(false);
+                    $('#sonUp').addClass('quitCharge');
                 });
     });
     // Descargar Archivos Malos
     $('#export').on('click',()=>{
-        $('#cancel').prop('disabled', true);
-        $('#save').prop('disabled', true);
-        $('#export').prop('disabled', true);
+        butonsDisabled(true);
 
         alert("Solo se puede exportar los fallos de este archivo una vez");
         arrayObjToCsv(elementsFail[0], "Fallos por registro");
@@ -189,7 +179,8 @@ $(document).ready(function () {
                     elementsFail.push(item);
                     countBad++;
                 } else {
-                    if (!item.includes("Documento") && !item.includes("document")) {
+                    let badwords = ["Documento", "Document", "document", "DOCUMENTO", "Tipo de Documento"];
+                    if (!item in badwords) {
     
                         registers.push({
                             "cellPhone": item[0],
@@ -228,28 +219,11 @@ $(document).ready(function () {
         $('#fileImport').val("");
         modalTable.destroy();
     }
+
+    function butonsDisabled(status) {
+        $('#cancel').prop('disabled', status);
+        $('#save').prop('disabled', status);
+        $('#export').prop('disabled', status);
+
+    }
 });
-
-const sonUp = document.getElementById("sonUp");
-// sonUp.style.visibility = 'visible';
-// sonUp.style.opacity = '1';
-
-// fileModal.show();
-
-
-
-// sonUp.style.visibility = 'hidden';
-// sonUp.style.opacity = '0';
-// sonUp.style.transition = 'all 500ms ease';
-
-
-
-
-// saveFile.addEventListener("click", () => {
-//     sonUp.style.visibility = 'visible';
-//     sonUp.style.opacity = '1';
-
-//     
-//
-//     console.log(urlFile);
-// })

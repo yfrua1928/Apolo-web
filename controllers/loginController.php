@@ -8,7 +8,7 @@ class Login extends Controller{
     }
 
     function register($user, $password){
-        return $this->model->validateLogin($user, MD5($password) );
+        return $this->model->validateLogin($user, $password);
     }
 
     function validateUser($user){
@@ -19,8 +19,8 @@ class Login extends Controller{
         return $this->model->updateLogin($id);
     }
 
-    function render(){
-        $this->view->render('login/login');
+    function render($message = ""){
+        $this->view->render('login/login', $message);
     }
 
     

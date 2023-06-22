@@ -25,6 +25,7 @@
 
 <!-- Libreria de Estilos -->
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 <!-- Template Main JS File -->
 <script src="assets/js/main.js" type="text/javascript"></script>
 

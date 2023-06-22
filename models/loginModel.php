@@ -4,29 +4,22 @@ class LoginModel extends Model{
 
     function __construct(){
         parent::__construct();
+        $this->getDataToken();
     }
 
     function validateLogin($user, $password) {
-        $data = [];
-        $query = "SELECT `username`, `password`, `name`, `id`, `role` FROM `users` WHERE `username` = '$user' and `status` = 1";
-        // var_dump($query);
-        $this->db->connect();
-        $result = $this->db->getConnection()->query($query);
-        while ($row = $result->fetch_assoc()) {
-            array_push($data, $row);
+        $result = parent::sendData(login.$_SESSION['token'], array('user' => $user, 'password' => $password), "POST");
+        if ( isset($result['id']) ){
+            $_SESSION['name'] = $result['name'];
+            $_SESSION['id'] = $result['id'];
+            $_SESSION['user'] = $result['username'];
+            $_SESSION['rol'] = $result['role'];
+            return true;
+        }else if(isset($result['error'])){
+           return $result['error'];
+        }else{
+           return "500";
         }
-        var_dump($data);
-        $this->db->closeConnec();
-        if (!empty($data)){
-           if (strcmp( $data[0]['password'], $password) == 0 ){
-            $_SESSION['name'] = $data[0]['name'];
-            $_SESSION['id'] = $data[0]['id'];
-            $_SESSION['user'] = $data[0]['user_name'];
-            $_SESSION['rol'] = $data[0]['role'];
-            return 1;
-           }
-        }
-        return 0;
     }
     
     function validateUser($id){
@@ -36,13 +29,20 @@ class LoginModel extends Model{
     }
 
     function updateLogin($id){
-        $time = date('Y-m-d H:i:s');
-        $query = "UPDATE `users` SET `lastconnection`='$time' WHERE id = '$id';";
-        $this->db->connect();
-        $this->db->getConnection()->query($query);
-        $this->db->closeConnec();
+        $data = array('id' =>  $_SESSION['id'], 'lastconnection' => date('Y-m-d H:i:s'));
+        $result = parent::sendData(updateTime.$_SESSION['token'], $data, "PUT");
+        if (!isset($result["Status"]) || $result["Status"] !== "0001" ){
+            return false;
+        }
         return true;
     }
 
-    //INSERT INTO `users`(`id`, `user_name`, `password`, `date_created`, `last_con`, `name`) VALUES ('642a113027449', 'admin','admin','2023-04-02 18:00:00','2023-04-02 18:00:00','Administrator');
+    function getDataToken(){
+        $result = parent::getData(token);
+        if(isset($result["accessToken"])){
+            $_SESSION['token']=$result["accessToken"];
+        }
+        return;
+    }
+
 }

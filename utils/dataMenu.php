@@ -33,7 +33,7 @@ $funcionales = array(
     ],
     "institutions" => [
         "module" => "institutions",
-        "icon" => "bi bi-people",
+        "icon" => "bi bi-buildings",
         "title" => "Instituciones",
         "permit" => [0]
     ]

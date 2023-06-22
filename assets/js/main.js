@@ -1,4 +1,3 @@
-
 async function getToken() {
   try {
     let response = await axios.post("https://apolo.tramisalud.com/Api/Login").catch(err => {throw err;});

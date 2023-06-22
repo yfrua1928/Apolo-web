@@ -12,6 +12,7 @@ class App {
         $this->notSession($url);
 
     }
+    
 
     function notSession($url){
 
@@ -19,27 +20,26 @@ class App {
 
             case 'validate':
                 $login = $this->loginSession();
-                if($login->register($_POST['username'], $_POST['password'])){
+                $result = $login->register($_POST['username'], $_POST['password']);
+                if($result === true){
                     unset($_POST['username']);
                     unset($_POST['password']);
                     $_SESSION['logged_in'] = 1;
-                    $login->updateLogin($_SESSION['id']);
-                    header('Location: '.constant('URL').'home');
-
-                }else{
-                    if ( $login->validateUser( $_POST['username'] ) ) {
-                        $message = "Ingreso mal las credenciales";
-                        $site = 'login';
+                    if ($login->updateLogin($_SESSION['id'])){
+                        header('Location: '.constant('URL').'home');
                     }else{
-                        $message = "El usuario no existe, cree una cuenta";
-                        $site = 'register';
-                   }
-                   ?>
-                   <script Language="JavaScript" type="text/javascript">
-                       alert("<?php echo $message ?>");
-                       window.location.href = window.location.protocol + "//" + window.location.host + '/Apolo-web/<?php echo $site ?>';
-                   </script>
-                   <?php
+                        setcookie("error", "Error al iniciar sesion, intentelo mas tarde", time()+5);
+                        header('Location: '.constant('URL').'login');
+                        exit;
+                    }
+                }else{
+                    if( $result === "0001"){
+                        setcookie("error", "Credenciales incorrectas, vuelva a iniciar sesion", time()+5);
+                    }else{
+                        setcookie("error", "No es posible conectarse con el servidor, Comuniquese con el administrador", time()+5);
+                    }
+                    header('Location: '.constant('URL').'login');
+                    exit;
                 }
                 break;
             case 'register':

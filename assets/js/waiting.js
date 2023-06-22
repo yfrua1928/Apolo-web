@@ -85,11 +85,7 @@ $(document).ready(function () {
                     { data: 'idInstitution' },
                 ],
                 order: [[1, "desc"]],
-                columnDefs: [
-                    { width: "8%", targets: 1 },
-                    { width: "2%", targets: 3 },
-                    { width: "2%", targets: 4 }                    
-                  ]
+                
             });
             $('#download').prop('disabled', false);
         })
