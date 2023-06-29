@@ -1,0 +1,1 @@
+export const url1 = 'abcd123';

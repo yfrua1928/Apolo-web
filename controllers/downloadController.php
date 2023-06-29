@@ -6,7 +6,7 @@ class Download extends Controller{
     }
 
     function render(){
-        $this->view->pathJs = 'download.js';
+        $this->view->pathJs = 'Download';
         $this->view->datos = $this->model->getFiles();
         $this->view->title = 'Descarga Documentos';
         $this->view->render('download/download');

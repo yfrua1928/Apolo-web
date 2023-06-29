@@ -1,72 +1,79 @@
+import { Main } from './main.js';
+import { Espanol } from './utils/espanol.js';
+import { DownloadCSV } from './utils/downloadCSV.js';
 
-$(document).ready(function () {
-    
-    const fileModal = new bootstrap.Modal(document.getElementById('fileModal'));
-    var nameFile;
-    var data = new Array();
-    var elementsFail = new Array();
-    var registers = [];
-    var token;
-    var file;
-    var modalTable
+var token;
+var espanol;
+var csv;
 
-    // Tabla Principal
-    getToken().then(data => {
-        token = data;
-        $('#files').DataTable({
-            language: espanol,
-            ajax: {
-                url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
-                dataSrc: '',
-                error: function (xhr, error, code) {
-                    alert("Inconsistencia al cargar la tabla. Error numero: "+xhr.status);
+const fileModal = new bootstrap.Modal(document.getElementById('fileModal'));
+var nameFile;
+var data = new Array();
+var elementsFail = new Array();
+var registers = [];
+var file;
+var modalTable;
+
+export class Upload{
+
+    constructor(){
+        let main = new Main(); 
+        espanol = new Espanol(); 
+        csv = new DownloadCSV();
+
+        // Tabla Principal
+        main.getToken().then(data => {
+            token = data;
+            $('#files').DataTable({
+                language: espanol.espanol(),
+                ajax: {
+                    url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
+                    dataSrc: '',
+                    error: function (xhr, error, code) {
+                        alert("Inconsistencia al cargar la tabla. Error numero: "+xhr.status);
+                    },
                 },
-            },
-            columns: [
-                {
-                    data: "idFile", render: function (data) {
-                        return `<strong>${data}</strong>`
-                    }
-                },
-                {data: "nameFile" },
-                {data: "nameUsers"},
-                {data: "nameInstituteAsigned"},
-                {data: "dateCreate" }
-            ],
-            order:[[4, "desc"]],
+                columns: [
+                    {
+                        data: "idFile", render: function (data) {
+                            return `<strong>${data}</strong>`
+                        }
+                    },
+                    {data: "nameFile" },
+                    {data: "nameUsers"},
+                    {data: "nameInstituteAsigned"},
+                    {data: "dateCreate" }
+                ],
+                order:[[4, "desc"]],
+            })
+            // fileModal.show();
         })
-        // fileModal.show();
-    })
 
-    // Descargar Plantilla
-    $('#template').click(async (e) =>{
-        e.preventDefault();
+        // Capturar Informacion del Archivo
+        $('#fileImport').on('change',e => { file = e.target.files[0] });
 
-        const response = await fetch("Apolo-web/files/Formato AppointmentBooking.csv");
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "Formato AppointmentBooking.csv";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    });
+        // Enviar Informacion del Archivo a la web
+        $('#charge').on('click',() => { this.setDataFromFile(); })
 
-    // Capturar Informacion del Archivo
-    $('#fileImport').change(e => { file = e.target.files[0] });
+        // Guardar y enviar registros a API Apolo
+        $('#save').on('click',() => { this.save() });
 
-    // Enviar Informacion del Archivo a la web
-    $('#charge').click(() => {
+        // Cerrar el modal y Vaciar datos
+        $("#cancel").on('click',() => { this.closeModal() });
+
+        // Descargar Datos Malos
+        $('#export').on('click',()=>{ this.exportFails() })
+
+    }    
+
+    setDataFromFile(){
         fileModal.show();
-        butonsDisabled(true);
-
+        this.butonsDisabled(true);
         var allowedExtensions = /(.csv)$/i;
         if (allowedExtensions.exec($('#fileImport').val())) {
             const reader = new FileReader();
             reader.onload = () => {
-                validate(reader.result);
+                this.validate(reader.result);
                 modalTable = $('#modalFile').DataTable({
                     "language": espanol,
                     "data": registers,
@@ -102,62 +109,9 @@ $(document).ready(function () {
         } else {
             alert('Porfavor cargue un archivo valido');
         }
+    };
 
-    })
-    // Cerrar el modal y Vaciar datos
-    $("#cancel").click(CloseModal);
-    // Guardar y enviar registros a API Apolo
-    $('#save').click(() => {
-        $('#sonUp').removeClass('quitCharge');
-        const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
-        butonsDisabled(true);
-
-        let fileName = () => {
-            let parts = nameFile.split(".");
-            return parts[0] + "-" + moment().format('L-H:mm:ss') + "." + parts[1];
-        }
-
-        data.push({
-            "identifier": uuid.v4(),
-            "nameFile": fileName(),
-            "idUser": $('#identifier').val(),
-            "data": registers
-        })
-        axios.post(urlFile, JSON.stringify(data), {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            }).then(data => {
-                    console.log(data.data)
-                    if (data.data.Status === "0001") {
-                        // aqui recarga la ventana
-                        alert(data.data.Message);
-                        location.reload();
-                    } 
-                    alert(data.data.Message);   
-                    butonsDisabled(false);
-                    $('#sonUp').addClass('quitCharge');
-                   
-                })
-                .catch(err => {
-                    alert("Muestre este error al administrado: " + err);
-                    butonsDisabled(false);
-                    $('#sonUp').addClass('quitCharge');
-                });
-    });
-    // Descargar Archivos Malos
-    $('#export').on('click',()=>{
-        butonsDisabled(true);
-
-        alert("Solo se puede exportar los fallos de este archivo una vez");
-        arrayObjToCsv(elementsFail[0], "Fallos por registro");
-
-        $('#cancel').prop('disabled', false);
-        $('#save').prop('disabled', false);
-        
-    })
-
-    function validate(data) {
+    validate(data) {
         let countGood = 0;
         let countBad = 0;
         data.split("\r\n").forEach(items => {
@@ -174,14 +128,14 @@ $(document).ready(function () {
                 }
                 
             }
+            
             if (total > 0){
                 if (total < 11 || total <= 11 && count > 0 || total == 12 && count > 1) {
                     elementsFail.push(item);
                     countBad++;
                 } else {
                     let badwords = ["Documento", "Document", "document", "DOCUMENTO", "Tipo de Documento"];
-                    if (!item in badwords) {
-    
+                    if (!(item in badwords)) {
                         registers.push({
                             "cellPhone": item[0],
                             "typeDocument": item[1],
@@ -211,7 +165,60 @@ $(document).ready(function () {
         if (elementsFail.length > 0)$('#export').prop('disabled', false);
     }
 
-    function CloseModal() {
+    save(){
+        $('#sonUp').removeClass('quitCharge');
+        const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
+        this.butonsDisabled(true);
+
+        let fileName = () => {
+            let parts = nameFile.split(".");
+            return parts[0] + "-" + moment().format('L-H:mm:ss') + "." + parts[1];
+        }
+
+        data.push({
+            "identifier": uuid.v4(),
+            "nameFile": fileName(),
+            "idUser": $('#identifier').val(),
+            "data": registers
+        })
+        axios.post(urlFile, JSON.stringify(data[0]), {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+        }).then(data => {
+            console.log(data.data)
+            if (data.data.Status === "0001") {
+                // aqui recarga la ventana
+                alert(data.data.Message);
+                location.reload();
+            } 
+            alert(data.data.Message);   
+            this.butonsDisabled(false);
+            $('#sonUp').addClass('quitCharge');
+            
+        })
+        .catch(err => {
+            alert("Muestre este error al administrado: " + err);
+            this.butonsDisabled(false);
+            $('#sonUp').addClass('quitCharge');
+        });
+    }
+
+    exportFails(){
+        this.butonsDisabled(true);
+        alert("Solo se puede exportar los fallos de este archivo una vez");
+        csv.arrayObjToCsv(elementsFail[0], "Fallos por registro");
+        $('#cancel').prop('disabled', false);
+        $('#save').prop('disabled', false);
+    }
+
+    butonsDisabled(status) {
+        $('#cancel').prop('disabled', status);
+        $('#save').prop('disabled', status);
+        $('#export').prop('disabled', status);
+    }
+
+    closeModal() {
         fileModal.hide();
         elementsFail = [];
         registers = [];
@@ -220,10 +227,20 @@ $(document).ready(function () {
         modalTable.destroy();
     }
 
-    function butonsDisabled(status) {
-        $('#cancel').prop('disabled', status);
-        $('#save').prop('disabled', status);
-        $('#export').prop('disabled', status);
+}
 
-    }
-});
+//     // Descargar Plantilla
+//     $('#template').click(async (e) =>{
+//         e.preventDefault();
+//         const response = await fetch("Apolo-web/files/Formato AppointmentBooking.csv");
+//         const blob = await response.blob();
+//         const url = window.URL.createObjectURL(blob);
+//         const a = document.createElement("a");
+//         a.href = url;
+//         a.download = "Formato AppointmentBooking.csv";
+//         document.body.appendChild(a);
+//         a.click();
+//         a.remove();
+//         window.URL.revokeObjectURL(url);
+//     });
+

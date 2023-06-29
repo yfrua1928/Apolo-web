@@ -1,21 +1,31 @@
-$(document).ready(function () {
-    var token;
-    var waiting;
-    var url = '';
-    var registers = new Array();
+import { Main } from './main.js';
+import { Espanol } from './utils/espanol.js';
+import { DownloadCSV } from './utils/downloadCSV.js';
 
-    // if (localStorage.getItem('institute') === null){
-    //     url = '';
-    // }else{
-    //     url = `idInstitute=${$('#institution').val()}&`;
-    // }
+var token;
+var espanol;
+var registers = new Array();
+var waiting;
+var csv;
+var url = '';
 
-    getToken().then(data => {
-        token = data;
-        createTable(data);
-    })
+export class Waiting{
 
-    $('#institution').on('change',(e) => {
+    constructor(){
+        let main = new Main();
+        espanol = new Espanol();
+        csv = new DownloadCSV();
+        main.getToken().then(response => {
+            token = response;
+            this.createTable(response);
+        });      
+        $('#clear').on('click', () =>{ this.clearFields(); });
+        $('#filter').on('click', (e) => { this.filterDate(); });
+        $('#download').on('click', e => { csv.arrayObjToCsv(registers[0], "Lista de Espera"); });
+        $('#institution').on('change',(e) => { this.changeInFields(e) })
+    };
+
+    changeInFields(e){   
         if ( parseInt(e.target.value) !== 0){
             $('#dateInitial').prop('disabled', false);
             $('#dateFinal').prop('disabled', false);
@@ -27,17 +37,17 @@ $(document).ready(function () {
             $('#dateFinal').val("");
             
         }
-    })
+    };
 
-    $('#clear').on('click',() => {
+    clearFields() {
         $('#dateInitial').val("");
         $('#dateFinal').val("");
         $('#dateInitial').prop('disabled', true);
         $('#dateFinal').prop('disabled', true);
         $('#institution').val(0)
-    });
+    };
 
-    $('#filter').on('click', (e) => {
+    filterDate(){
         let date =  $('#dateInitial').val();
         let date2 =  $('#dateFinal').val();
 
@@ -46,23 +56,21 @@ $(document).ready(function () {
             
         }else{
             registers = [];
-            validateUrl();
+            this.validateUrl();
             waiting.destroy();
             $('tbody').remove();
-            createTable(token);
+            this.createTable(token);
         }
-        
-    });
+    };
 
-    $('#download').on('click', e => {
-        arrayObjToCsv(registers[0], "Lista de Espera");
-    });
-
-    function createTable(token) {
-        axios.get(`https://apolo-pruebas.tramisalud.com/Api/message/waitingList?token=${token}${url}`).then(response => {
+    createTable() {
+                
+        axios.get(`https://apolo-pruebas.tramisalud.com/Api/message/waitingList?token=${token}${url}`)
+        .then(response => {
             registers.push(response.data);
+            // console.log(response.data);
             waiting = $('#waiting').DataTable({
-                language: espanol,
+                language: espanol.espanol(),
                 data: response.data,
                 columns: [
                     { data: 'id' },
@@ -91,7 +99,7 @@ $(document).ready(function () {
         })
     }
 
-    function validateUrl(){
+    validateUrl(){
         let inst = parseInt($('#institution').val());
         let date =  $('#dateInitial').val();
         let date2 =  $('#dateFinal').val();
@@ -110,4 +118,5 @@ $(document).ready(function () {
         // console.log(url);
     }
     
-})
+}
+

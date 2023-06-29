@@ -1,12 +1,15 @@
 <?php
 class App {
 
+    public $url;
+
     function __construct(){
         session_start();
         
         $url = isset($_GET['url']) ? $_GET['url'] : null;
         $url = rtrim($url, "/");
         $url = explode("/", $url);
+        $GLOBALS['URL'] = $url[0];
     
         $this->sessionStarted($url);
         $this->notSession($url);

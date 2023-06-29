@@ -8,10 +8,10 @@
                         <h3 class="modal-title" id="registerTitle"></h3>
                     </div>
                     <div class="col-2 d-flex justify-content-end">
-                        <button id="send" type="button" class="btn btn-success mx-1" data-bs-toggle="tooltip" data-bs-title="Reenviar"><i class="bi bi-send"></i></button>
-                        <button id="export" type="submit" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-title="Descargar Documento"><i class="bi bi-cloud-download"></i></button>
-                        <button id="update" type="submit" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-title="Actualizar Tabla"><i class="bi bi-arrow-clockwise"></i></button>
-                        <button id="exit" type="button" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-title="Salir"><i class="bi bi-door-open"></i></button>
+                        <button disabled id="send" type="button" class="btn btn-success mx-1" data-bs-toggle="tooltip" data-bs-title="Reenviar"><i class="bi bi-send"></i></button>
+                        <button disabled id="export" type="submit" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-title="Descargar Documento"><i class="bi bi-cloud-download"></i></button>
+                        <button disabled id="update" type="submit" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-title="Actualizar Tabla"><i class="bi bi-arrow-clockwise"></i></button>
+                        <button disabled id="exit" type="button" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-title="Salir"><i class="bi bi-door-open"></i></button>
                     </div>
                 </div>
                 <hr class="border border-secondary border-2 opacity-50 w-100">
@@ -89,7 +89,7 @@
                         <input id="can" class="form-control" type="text" readonly>
                     </div>
                     <div class="col-auto pe-2 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Cancelada Por El Usuario" style="color:orange;" class="fs-4 bi bi-hourglass"></i>
+                        <i data-bs-toggle="tooltip" data-bs-title="Cancelado por Tiempos de Espera" style="color:orange;" class="fs-4 bi bi-hourglass"></i>
                     </div>
                     <div class="col-1 ps-0 pe-1 pt-1">
                         <label class="text-center"> Cancelada Por Tiempo Limite</label>
@@ -102,9 +102,6 @@
             </div>
             
             <div class=" contenedor modal-body position-relative">            
-                
-                
-                
                 <div class="row uploadModal" >
                     <table id="tableRegister" class="table mt-2">
                         <thead>
