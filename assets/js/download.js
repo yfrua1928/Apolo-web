@@ -20,8 +20,6 @@ var reesend = new Array();
 
 export class Download{
 
-   
-
     constructor(){
         let main = new Main(); 
         espanol = new Espanol(); 
@@ -95,12 +93,10 @@ export class Download{
     }
     
     resend(){
-        this.butonsDisabled(true);
+        butonsDisabled(true);
         alert('Se van a reenviar los datos, por favor no cierre esta ventana.');
         $('#sonUp').removeClass('quitCharge');
-        let fileName = 'reenvio-'+moment().format('L-H:mm:ss')+'-'+idGlobal;
-        console.log(fileName);
-        this.getDataForResend();
+        getDataForResend();
     }
     update(){
         $('#sonUp').removeClass('quitCharge');
@@ -129,8 +125,6 @@ export class Download{
 
 }
 
-
-
 function getDataRegisters(id) {  
     idGlobal = id; 
     $('.modal-title').text(`Documento # ${id}`)
@@ -147,6 +141,7 @@ function getDataRegisters(id) {
     let canTimeOut = 0
 
     let urlRegisters = `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${id}&token=${token}`;    
+    console.log(urlRegisters);
     axios({
             method: "POST",
             url: urlRegisters,
@@ -270,23 +265,41 @@ function butonsDisabled(status) {
 }
 
 function getDataForResend(){
-    var info;
+    let info = new Array();
+    let items = new Array();
     var registers;
     axios.get( `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${idGlobal}&token=${token}`)
     .then(response => response.data).then(response =>{
         registers = response.filter(item => {
             return item.status == '1'
-        });
-        info = {
+        }).map(item => {
+           return {
+            "cellPhone": item.cellPhone,
+            "typeDocument": item.typeDocument,
+            "document": item.document,
+            "name": item.name.trim(),
+            "idInstitute": item.idInstitute,
+            "dateAppointment": item.dateAppointment,
+            "appointmentHour": item.appointmentHour,
+            "medic": item.medic,
+            "speciality": item.speciality,
+            "autorization": item.autorization,
+            "Type": item.Type,
+            "cups": item.cups   
+           } 
+        })
+
+        info =  {
             "identifier": uuid.v4(),
             "nameFile": 'reenvio-'+idGlobal+'-'+moment().format('L-H:mm:ss'),
             "idUser": $('#identifier').val(),
             "data": registers
         }
+        console.log(info)
     })
     .then(() =>{
         if (registers.length >= 1){
-            const urlFile = `http://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
+            const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
             axios.post(urlFile, JSON.stringify(info), {
                 headers: {
                     'Content-Type': 'application/json'
