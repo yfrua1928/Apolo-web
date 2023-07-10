@@ -65,7 +65,7 @@ export class Download{
                 let botones = `
                     <div class="d-flex mt-2">
                         <a class="btn p-1 eye mensa" data-tooltip="Ver"><i class="fs-3 bi bi-eye"></i></a>
-                        <!-- <a class="btn p-1 send mensa" data-tooltip="Reenviar"><i class="fs-3 bi bi-send"></i></a> -->
+                        <a class="btn p-1 send mensa" data-tooltip="Reenviar"><i class="fs-3 bi bi-send"></i></a>
                     </div>`;
                 return botones;
             }
@@ -266,7 +266,6 @@ function butonsDisabled(status) {
 
 function getDataForResend(){
     let info = new Array();
-    let items = new Array();
     var registers;
     axios.get( `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${idGlobal}&token=${token}`)
     .then(response => response.data).then(response =>{

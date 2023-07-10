@@ -1,6 +1,11 @@
+// @ts-nocheck
+const dotenv = require('./assets/js/dotenv-matester');
 export class Main {
 
+  
   constructor(){
+    dotenv.config();
+    console.log(process.env.DB_HOST);
       (() => {
     "use strict";
     /**
