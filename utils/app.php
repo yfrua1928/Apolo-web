@@ -113,7 +113,7 @@ class App {
     function loginSession(){
         include 'controllers/loginController.php';
         $controller =  new Login();
-        $controller->loadModel('Login');
+        $controller->loadModel('login');
         return $controller;
     }
 
