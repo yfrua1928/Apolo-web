@@ -44,6 +44,7 @@ export class Download{
         token = data;
         initTable = $('#initTable').DataTable({
             language: espanol.espanol(),
+            pageLength: 50,
             ajax: {
                 url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
                 dataSrc: ''
@@ -151,8 +152,9 @@ function getDataRegisters(id) {
             console.log(data);
             total = (data.length > 0)? data.length: 0;
             tableRegister = $('#tableRegister').DataTable({
-                language: espanol,
+                language: espanol.espanol(),
                 data: data,
+                pageLength: 50,
                 columns:[
                     {data: 'typeDocument'},
                     {data: 'document'},
@@ -249,10 +251,11 @@ function setStadistics(stadistics) {
     $("#confir").val(stadistics.confir);
     $("#nothing").val(stadistics.nothing);
     $("#sg").val(stadistics.sg);
-    $("#sr").val(stadistics.sr);
-    $("#con").val(stadistics.con);
-    $("#can").val(stadistics.can);
-    $("#canTimeOut").val(stadistics.canTimeOut);
+    $("#sg").text(stadistics.sg);
+    $("#sr").text(stadistics.sr);
+    $("#con").text(stadistics.con);
+    $("#can").text(stadistics.can);
+    $("#canTimeOut").text(stadistics.canTimeOut);
 }
 
 function butonsDisabled(status) {

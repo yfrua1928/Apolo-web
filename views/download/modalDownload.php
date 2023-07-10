@@ -49,54 +49,46 @@
                 </div>
                 <hr class="border border-secondary border-1 opacity-50 w-100">
                 <div class="row w-100">
-                    <div class="col-auto pe-1 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Sin Gestionar" style="color:#ffc800db;" class="bx bxs-message-rounded-minus fs-2"></i>
-                    </div>
-                    <div class="col-auto ps-0 pe-1 pt-1">
-                        <label> Sin Gestionar</label>
-                    </div>
-                    <div class="col-1 ps-0 input-group-sm">
-                        <input id="sg" class="form-control" type="text" readonly>
-                    </div>
-
-                    <div class="col-auto pe-1 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Sin Confirmar" class="bx bx-check fs-2"></i>
-                    </div>
-                    <div class="col-auto ps-0 pe-1 pt-1">
-                        <label class="text-center"> Sin Respuesta</label>
-                    </div>
-                    <div class="col-1 ps-0 input-group-sm">
-                        <input id="sr" class="form-control" type="text" readonly>
-                    </div>
-
-                    <div class="col-auto pe-1 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Confirmado" style="color:#53bdeb;"class="fs-2 bx bx-check-double"></i>
-                    </div>
-                    <div class="col-auto ps-0 pe-1 pt-1">
-                        <label class="text-center"> Confirmado</label>
-                    </div>
-                    <div class="col-1 ps-0 input-group-sm">
-                        <input id="con" class="form-control" type="text" readonly>
-                    </div>
-
-                    <div class="col-auto pe-2 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Cancelada Por El Usuario" style="color:red;" class="fs-4 bi bi-x-octagon"></i>
-                    </div>
-                    <div class="col-1 ps-0 pe-1 pt-1">
-                        <label class="text-center"> Cancelada Por El Usuario</label>
-                    </div>
-                    <div class="col-1 ps-0 input-group-sm">
-                        <input id="can" class="form-control" type="text" readonly>
-                    </div>
-                    <div class="col-auto pe-2 ">
-                        <i data-bs-toggle="tooltip" data-bs-title="Cancelado por Tiempos de Espera" style="color:orange;" class="fs-4 bi bi-hourglass"></i>
-                    </div>
-                    <div class="col-1 ps-0 pe-1 pt-1">
-                        <label class="text-center"> Cancelada Por Tiempo Limite</label>
-                    </div>
-                    <div class="col-1 ps-0 input-group-sm">
-                        <input id="canTimeOut" class="form-control" type="text" readonly>
-                    </div>
+                    <table >
+                        <tr style="border: 1px solid #ced4da; border-radius:5px">
+                            <th class="contIcon">
+                                <i data-bs-toggle="tooltip" data-bs-title="Sin Gestionar" style="color:#ffc800db;" class="bx bxs-message-rounded-minus fs-2"></i>
+                            </th>
+                            <th>
+                                <label> Sin Gestionar</label>
+                            </th>
+                            <th id="sg" class="stacs"></th>
+                            <th></th>
+                            <th class="contIcon">
+                                <i data-bs-toggle="tooltip" data-bs-title="Sin Confirmar" class="bx bx-check fs-2 ps-2"></i>
+                            </th>
+                            <th>
+                                <label class="text-center"> Sin Respuesta</label>
+                            </th>
+                            <th id="sr" class="stacs" ></th>
+                            <th class="contIcon">
+                                <i data-bs-toggle="tooltip" data-bs-title="Confirmado" style="color:#53bdeb;"class="fs-2 bx bx-check-double ps-2"></i>
+                            </th>
+                            <th>
+                                <label class="text-center"> Confirmado</label>
+                            </th>
+                            <th id="con" class="stacs"></th>
+                            <th class="contIcon">
+                                <i data-bs-toggle="tooltip" data-bs-title="Cancelada Por El Usuario" style="color:red;" class="fs-4 bi bi-x-octagon ps-2"></i>
+                            </th>
+                            <th>
+                                <label class="text-center"> Cancelada Por El Usuario</label>
+                            </th>
+                            <th id="can" class="stacs"></th>
+                            <th class="contIcon">
+                                <i data-bs-toggle="tooltip" data-bs-title="Cancelado por Tiempos de Espera" style="color:orange;" class="fs-4 bi bi-hourglass ps-2"></i>
+                            </th>
+                            <th>
+                                <label class="text-center"> Cancelada Por Tiempo Limite</label>
+                            </th>
+                            <th id="canTimeOut" class="stacs"></th>
+                        </tr>
+                    </table>
                 </div>
 
             </div>

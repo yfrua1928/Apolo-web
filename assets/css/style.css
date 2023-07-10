@@ -1358,6 +1358,19 @@ tbody .btn-sm:hover{
   color:orangered;
 }
 
+.stacs{
+  border: 1px solid #ced4da;
+  padding: 5px;
+  background-color: white;
+}
+
+.contIcon{
+  width: 3em;
+}
+.contText{
+  width: 10em;
+}
+
 @media only screen and (max-width: 1199px) {
   body{
     font-size: 10px;
