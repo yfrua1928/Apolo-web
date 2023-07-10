@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   
   <link rel="icon" href="<?php echo URL;?>views/resources/Img/calen.ico">
@@ -22,7 +22,7 @@
   
   <!-- Vendor CSS Files -->
   <link href="assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/libs/datatable/datatables.min.css">
+  <link href="assets/libs/datatable/datatables.min.css" rel="stylesheet">
 
   <link href="assets/libs/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/libs/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -43,7 +43,7 @@
 <body class="toggle-sidebar">
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
-    <input class="d-none" id="identifier" value="<?php echo $_SESSION['id']?>"/>
+    <input type="hidden" id="identifier" value="<?php echo $_SESSION['id']?>"/>
     <div class="d-flex align-items-center justify-content-between">
     <i class=" bi bi-list toggle-sidebar-btn"></i>
       <a href="index.html" class="ml-6 logo d-flex align-items-center">

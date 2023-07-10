@@ -11,8 +11,8 @@ class Controller{
 
     function loadModel($model) {
         
-        //$url = 'models/'.$model.'Model.php';
         $url = path.'models/'.$model.'Model.php';
+        // $url = '/var/www/html/apolo/models/'.$model.'Model.php';
         
         if(file_exists($url)){
             require $url;

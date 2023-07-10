@@ -7,11 +7,11 @@ include 'views/menu.php';
   <div class="row">
 
     <!-- Left side columns -->
-    <div class="col-lg-8">
+    <div class="col-lg-12">
       <div class="row">
 
         <!-- Sales Card -->
-        <div class="col-xxl-4 col-md-6">
+        <div class="col-xxl-3 col-md-6">
           <div class="card info-card sales-card">
 
             <div class="card-body">
@@ -21,14 +21,14 @@ include 'views/menu.php';
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-calendar-range"></i>
                 </div>
-                <div class="ps-3">
+                <div class="ps-3 row">
                   <?php foreach ($this->datosAd as $file) { ?>
-                    <h6><?php echo $file['Total']; ?></h6>
-
-                    <?php $TotalAd=$file['Total'];?>
-                    <span class="text-success small pt-1 fw-bold"><?php echo $file['Confirmados']; ?></span> <span class="text-muted small pt-2 ps-1">Confirmados</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['Cancelados']; ?></span> <span class="text-muted small pt-2 ps-1">Canceladas</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['NoRespuestas']; ?></span> <span class="text-muted small pt-2 ps-1">Sin Respuesta</span>
+                    <h5><?php echo $file['Total']; ?></h5>
+                    <span class="text-muted small pt-1 fw-bold"><?php echo $file['CanceladosXenvio']; ?><a class="text-muted small pt-4 ps-1">-Pendiente De Envio</a></span> 
+                    <span class="text-success small pt-1 fw-bold w-100"><?php echo $file['Confirmados']; ?><a class="text-muted small pt-4 ps-1">-Confirmados</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['Cancelados']; ?><a class="text-muted small pt-4 ps-1">-Canceladas Por Usuario</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['CanceladosXnoRespuesta']; ?><a class="text-muted small pt-4 ps-1">-Canceladas Por No Respuesta</a></span> 
+                    <span class="text-muted small pt-1 fw-bold"><?php echo $file['NoRespuestas']; ?><a class="text-muted small pt-4 ps-1">-Sin Respuesta</a></span> 
                   <?php } ?>
                 </div>
               </div>
@@ -37,41 +37,12 @@ include 'views/menu.php';
           </div>
         </div><!-- End Sales Card -->
 
-        <!-- Revenue Card -->
-        <div class="col-xxl-4 col-md-6">
+        <!-- Customers Card -->
+        <div class="col-xxl-3 col-md-6">
+
           <div class="card info-card revenue-card">
 
-           
 
-            <div class="card-body">
-              <h5 class="card-title">Agenda No disponible </h5>
-
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-chat-dots"></i>
-                </div>
-                <div class="ps-3">
-                <?php foreach ($this->datosAnd as $file) { ?>
-                    <h6><?php echo $file['Total']; ?></h6>
-
-                    <?php $TotalAnd=$file['Total'];?>
-                    <span class="text-success small pt-1 fw-bold"><?php echo $file['Confirmados']; ?></span> <span class="text-muted small pt-2 ps-1">Confirmados</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['Cancelados']; ?></span> <span class="text-muted small pt-2 ps-1">Canceladas</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['NoRespuestas']; ?></span> <span class="text-muted small pt-2 ps-1">Sin Respuesta</span>
-                  <?php } ?>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div><!-- End Revenue Card -->
-
-        <!-- Customers Card -->
-        <div class="col-xxl-4 col-xl-12">
-
-          <div class="card info-card customers-card">
-
-            
 
             <div class="card-body">
               <h5 class="card-title">Confirmacion </h5>
@@ -80,14 +51,44 @@ include 'views/menu.php';
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                   <i class="bi bi-clock-history"></i>
                 </div>
-                <div class="ps-3">
-                <?php foreach ($this->datosC as $file) { ?>
-                    <h6><?php echo $file['Total']; ?></h6>
+                <div class="ps-3 row">
+                  <?php foreach ($this->datosC as $file) { ?>
+                    <h5><?php echo $file['Total']; ?></h5>
+                    <span class="text-muted small pt-1 fw-bold"><?php echo $file['CanceladosXenvio']; ?><a class="text-muted small pt-4 ps-1">-Pendiente De Envio</a></span> 
+                    <span class="text-success small pt-1 fw-bold w-100"><?php echo $file['Confirmados']; ?><a class="text-muted small pt-4 ps-1">-Confirmados</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['Cancelados']; ?><a class="text-muted small pt-4 ps-1">-Canceladas Por Usuario</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['CanceladosXnoRespuesta']; ?><a class="text-muted small pt-4 ps-1">-Canceladas Por No Respuesta</a></span> 
+                    <span class="text-muted small pt-1 fw-bold"><?php echo $file['NoRespuestas']; ?><a class="text-muted small pt-4 ps-1">-Sin Respuesta</a></span> 
+                  <?php } ?>
+                </div>
+              </div>
 
-                    <?php $TotalC=$file['Total'];?>
-                    <span class="text-success small pt-1 fw-bold"><?php echo $file['Confirmados']; ?></span> <span class="text-muted small pt-2 ps-1">Confirmados</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['Cancelados']; ?></span> <span class="text-muted small pt-2 ps-1">Canceladas</span>
-                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['NoRespuestas']; ?></span> <span class="text-muted small pt-2 ps-1">Sin Respuesta</span>
+            </div>
+          </div>
+
+        </div><!-- End Customers Card -->
+        <!-- Customers Card -->
+        <div class="col-xxl-3 col-md-6">
+
+          <div class="card info-card customers-card">
+
+
+
+            <div class="card-body">
+              <h5 class="card-title">Lista Espera </h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-phone"></i>
+                </div>
+                <div class="ps-3 row">
+                  <?php foreach ($this->datosLE as $file) { ?>
+                    <h5><?php echo $file['Total']; ?></h5>
+                    <span class="text-success small pt-1 fw-bold w-100"><?php echo $file['HGM']; ?><a class="text-muted small pt-4 ps-1">-HGM</a></span> 
+                    <span class="text-success small pt-1 fw-bold"><?php echo $file['HLM']; ?><a class="text-muted small pt-4 ps-1">-HLM</a></span> 
+                    <span class="text-success small pt-1 fw-bold"><?php echo $file['COX']; ?><a class="text-muted small pt-4 ps-1">-COX</a></span> 
+                    <span class="text-success small pt-1 fw-bold"><?php echo $file['HVDD']; ?><a class="text-muted small pt-4 ps-1">-HVDD</a></span> 
+                    <span class="text-success small pt-1 fw-bold"><?php echo $file['HCIM']; ?><a class="text-muted small pt-4 ps-1">-HCIM</a></span> 
                   <?php } ?>
                 </div>
               </div>
@@ -97,30 +98,66 @@ include 'views/menu.php';
 
         </div><!-- End Customers Card -->
 
+        <!-- Revenue Card -->
+        <div class="col-xxl-3 col-md-6">
+          <div class="card info-card info-card">
+
+
+
+            <div class="card-body">
+              <h5 class="card-title">Agenda No disponible </h5>
+
+              <div class="d-flex align-items-center">
+                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                  <i class="bi bi-chat-dots"></i>
+                </div>
+                <div class="ps-3 row">
+                  <?php foreach ($this->datosAnd as $file) { ?>
+                    <h5><?php echo $file['Total']; ?></h5>
+                    <span class="text-danger small pt-1 fw-bold w-100"><?php echo $file['HGM']; ?><a class="text-muted small pt-4 ps-1">-HGM</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['HLM']; ?><a class="text-muted small pt-4 ps-1">-HLM</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['COX']; ?><a class="text-muted small pt-4 ps-1">-COX</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['HVDD']; ?><a class="text-muted small pt-4 ps-1">-HVDD</a></span> 
+                    <span class="text-danger small pt-1 fw-bold"><?php echo $file['HCIM']; ?><a class="text-muted small pt-4 ps-1">-HCIM</a></span> 
+                  <?php } ?>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- End Revenue Card -->
+
+        
         <!-- Reports -->
         <div class="col-12">
           <div class="card">
 
-         
+
 
             <div class="card-body">
-              <h5 class="card-title">Reportes</h5>
+              <h5 class="card-title">Reportes X semana de mensajes enviados</h5>
 
-              <!-- Line Chart -->
               <div id="reportsChart"></div>
 
+              <?php foreach ($this->SmsXh as $file) { ?>
               <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#reportsChart"), {
-                    series: [{
-                      name: 'Confirmacion',
-                      data: [31, 40, 28, 51, 42, 82, 56],
+                    series: [{ 
+                      name: 'HGM',
+                      data: [ <?php echo $file['S1HGM']; ?>, <?php echo $file['S2HGM'];?>, <?php echo $file['S3HGM']; ?>, <?php echo $file['S4HGM']; ?>]
                     }, {
-                      name: 'Lsta Espera',
-                      data: [11, 32, 45, 32, 34, 52, 41]
+                      name: 'HLM',
+                      data: [<?php echo $file['S1HLM']; ?>, <?php echo $file['S2HLM']; ?>, <?php echo $file['S3HLM']; ?>, <?php echo $file['S4HLM']; ?>]
                     }, {
-                      name: 'Agendamiento',
-                      data: [15, 11, 32, 18, 9, 24, 11]
+                      name: 'COX',
+                      data: [<?php echo $file['S1COX']; ?>,<?php echo $file['S2COX']; ?>, <?php echo $file['S3COX']; ?>, <?php echo $file['S4COX']; ?>]
+                    }, {
+                      name: 'HVDD',
+                      data: [<?php echo $file['S1HVDD']; ?>,<?php echo $file['S2HVDD']; ?>, <?php echo $file['S3HVDD']; ?>, <?php echo $file['S4HVDD']; ?>]
+                    }, {
+                      name: 'HCIM',
+                      data: [<?php echo $file['S1HCIM']; ?>,<?php echo $file['S2HCIM']; ?>, <?php echo $file['S3HCIM']; ?>, <?php echo $file['S4HCIM']; ?>]
                     }],
                     chart: {
                       height: 350,
@@ -132,7 +169,7 @@ include 'views/menu.php';
                     markers: {
                       size: 4
                     },
-                    colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                    colors: ['#4154f1', '#2eca6a', '#B8290A', '#870EE0', '#ff771d'],
                     fill: {
                       type: "gradient",
                       gradient: {
@@ -150,8 +187,8 @@ include 'views/menu.php';
                       width: 2
                     },
                     xaxis: {
-                      type: 'datetime',
-                      categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                      type: 'date',
+                      categories: ["  Semana 1-Total: <?php echo $file['S1Total'];?>","Semana 2-Total: <?php echo $file['S2Total'];?>", "Semana 3-Total: <?php echo $file['S3Total'];?>", "Semana 4-Total: <?php echo $file['S4Total'];?>"]
                     },
                     tooltip: {
                       x: {
@@ -161,88 +198,167 @@ include 'views/menu.php';
                   }).render();
                 });
               </script>
-              <!-- End Line Chart -->
+<?php } ?>
 
             </div>
 
           </div>
-        </div><!-- End Reports -->
+        </div>
 
 
       </div>
     </div><!-- End Left side columns -->
 
     <!-- Right side columns -->
-    <div class="col-lg-4">
+    <div class="col-lg-6">
+
+
+<!-- Website Traffic -->
+<div class="card">
+
+
+  <div class="card-body pb-0">
+    <h5 class="card-title">Sms de Confirmacion X Hospital</h5>
+
+    <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+    <?php foreach ($this->ConfirmacionXh as $file) { ?>
+            <h5>Total de mensajes: <?php echo $file['Total']; ?></h5>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          echarts.init(document.querySelector("#trafficChart")).setOption({
+            tooltip: {
+              trigger: 'item'
+            },
+            legend: {
+              top: '5%',
+              left: 'center'
+            },
+            series: [{
+              // name: ['General De Medellin','La Maria','Coraxon','Consejo Infantil'],
+              type: 'pie',
+              radius: ['40%', '70%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: '18',
+                  fontWeight: 'bold'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              data: [{
+                  value: <?php echo $file['HGM']; ?>,
+                  name: 'HGM'
+                },
+                {
+                  value: <?php echo $file['HLM']; ?>,
+                  name: 'HLM'
+                },
+                {
+                  value: <?php echo $file['COX']; ?>,
+                  name: 'COX'
+                },
+                {
+                  value: <?php echo $file['HCIM']; ?>,
+                  name: 'HCIM'
+                },
+                {
+                  value: <?php echo $file['HVDD']; ?>,
+                  name: 'HVDD'
+                }
+              ]
+            }]
+          });
+        });
+      </script>
+
+    <?php } ?>
+  </div>
+</div>
+
+</div><!-- End Right side columns -->
+
+
+    <div class="col-lg-6">
 
 
       <!-- Website Traffic -->
       <div class="card">
-       
 
-        <div class="card-body pb-0">
-          <h5 class="card-title">Sms Enviados</h5>
 
-          <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-          <?php foreach ($this->datosXh as $file) { ?>
-          <script>
-            document.addEventListener("DOMContentLoaded", () => {
-              echarts.init(document.querySelector("#trafficChart")).setOption({
-                tooltip: {
-                  trigger: 'item'
-                },
-                legend: {
-                  top: '5%',
-                  left: 'center'
-                },
-                series: [{
-                  // name: ['General De Medellin','La Maria','Coraxon','Consejo Infantil'],
-                  type: 'pie',
-                  radius: ['40%', '70%'],
-                  avoidLabelOverlap: false,
-                  label: {
-                    show: false,
-                    position: 'center'
+        <div class="card-body pb-1">
+          <h5 class="card-title">Sms de Agendamiento X Hospital</h5>
+
+          <div id="trafficChart1" style="min-height: 400px;" class="echart"></div>
+          <?php foreach ($this->AgendamientoXh as $file) { ?>
+            <h5>Total de mensajes: <?php echo $file['Total']; ?></h5>
+            <script>
+              document.addEventListener("DOMContentLoaded", () => {
+                echarts.init(document.querySelector("#trafficChart1")).setOption({
+                  tooltip: {
+                    trigger: 'item'
                   },
-                  emphasis: {
+                  legend: {
+                    top: '5%',
+                    left: 'center'
+                  },
+                  series: [{
+                    // name: ['General De Medellin','La Maria','Coraxon','Consejo Infantil'],
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
                     label: {
-                      show: true,
-                      fontSize: '18',
-                      fontWeight: 'bold'
-                    }
-                  },
-                  labelLine: {
-                    show: false
-                  },
-                  data: [{
-                      value: <?php echo $file['HGM']; ?>,
-                      name: 'HGM'
+                      show: false,
+                      position: 'center'
                     },
-                    {
-                      value: <?php echo $file['HLM']; ?>,
-                      name: 'HLM'
+                    emphasis: {
+                      label: {
+                        show: true,
+                        fontSize: '18',
+                        fontWeight: 'bold'
+                      }
                     },
-                    {
-                      value: <?php echo $file['COX']; ?>,
-                      name: 'COX'
+                    labelLine: {
+                      show: false
                     },
-                    {
-                      value: <?php echo $file['HCIM']; ?>,
-                      name: 'HCI'
-                    }
-                  ]
-                }]
+                    data: [{
+                        value: <?php echo $file['HGM']; ?>,
+                        name: 'HGM'
+                      },
+                      {
+                        value: <?php echo $file['HLM']; ?>,
+                        name: 'HLM'
+                      },
+                      {
+                        value: <?php echo $file['COX']; ?>,
+                        name: 'COX'
+                      },
+                      {
+                        value: <?php echo $file['HCIM']; ?>,
+                        name: 'HCIM'
+                      },
+                      {
+                        value: <?php echo $file['HVDD']; ?>,
+                        name: 'HVDD'
+                      }
+                    ]
+                  }]
+                });
               });
-            });
-          </script>
+            </script>
 
-<?php } ?>
+          <?php } ?>
         </div>
-      </div><!-- End Website Traffic -->
+      </div>
+    </div>
 
-      <!-- News & Updates Traffic -->
-
-
+ 
     </div><!-- End Right side columns -->
 
   </div>

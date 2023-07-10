@@ -18,4 +18,4 @@ class connection{
 
         return self::$instance;
     }
-}
+} 
