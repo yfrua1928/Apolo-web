@@ -3,6 +3,8 @@
 // define ('URL', 'https://apolo.tramisalud.com/');
 define ('URL', 'http://localhost:80/Apolo-web/');
 
+define ('path', '');
+
 define('servename','154.53.50.137');        
 define('username','ApoloWeb');
 define('password','Tms4p0loW3b2023*?');
@@ -22,6 +24,4 @@ define('token', 'http://apolo-pruebas.tramisalud.com/Api/Login'); // Pruebas
 define('updateTime', 'http://apolo-pruebas.tramisalud.com/Api/Users/updateConetion?token='); // Pruebas
 // define('updateTime', 'https://apolo.tramisalud.com/Api/Users/updateConetion?token='); // Productivo
 
-// define('');
-// define('');
 

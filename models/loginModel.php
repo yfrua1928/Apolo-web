@@ -39,6 +39,7 @@ class LoginModel extends Model{
 
     function getDataToken(){
         $result = parent::getData(token);
+        var_dump($result);
         if(isset($result["accessToken"])){
             $_SESSION['token']=$result["accessToken"];
         }
