@@ -41,8 +41,8 @@ class App {
                     }else{
                         setcookie("error", "No es posible conectarse con el servidor, Comuniquese con el administrador", time()+5);
                     }
-                    // header('Location: '.constant('URL').'login');
-                    // exit;
+                    header('Location: '.constant('URL').'login');
+                    exit;
                 }
                 break;
             case 'register':

@@ -118,15 +118,15 @@ export class Upload{
             let item = items.split(";");
             var count = 0;
             var total = 0;
-            
-            if (item.length > 1){
-                for (let a in item){
-                    if(item[a] === ""){
-                        count++; 
+
+            if (item.length > 1) {
+                for (let a in item) {
+                    if (item[a] === "") {
+                        count++;
                     }
                     total++;
                 }
-                
+
             }
             
             if (total > 0){
@@ -148,21 +148,22 @@ export class Upload{
                             "speciality": item[8],
                             "autorization": item[9],
                             "Type": item[10],
-                            "cups": (item[11] == "" || item[11] == undefined || item[11] == null)?0:item[11]
+                            "cups": (item[11] == "" || item[11] == undefined || item[11] == null) ? 0 : item[11]
                         });
                         countGood++;
                     };
                 }
             }
-            
+
         });
+        console.log(registers);
         $('#process').val(countGood + countBad);
         $('#success').val(countGood);
         $('#failes').val(countBad);
 
         $('#cancel').prop('disabled', false);
-        if (registers.length > 0)$('#save').prop('disabled', false);
-        if (elementsFail.length > 0)$('#export').prop('disabled', false);
+        if (registers.length > 0) $('#save').prop('disabled', false);
+        if (elementsFail.length > 0) $('#export').prop('disabled', false);
     }
 
     save(){

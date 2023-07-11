@@ -29,13 +29,13 @@ export class Waiting{
         if ( parseInt(e.target.value) !== 0){
             $('#dateInitial').prop('disabled', false);
             $('#dateFinal').prop('disabled', false);
-        }else{
+        } else {
             $('#dateInitial').prop('disabled', true);
             $('#dateInitial').val("");
 
             $('#dateFinal').prop('disabled', true);
             $('#dateFinal').val("");
-            
+
         }
     };
 
@@ -51,10 +51,10 @@ export class Waiting{
         let date =  $('#dateInitial').val();
         let date2 =  $('#dateFinal').val();
 
-        if (date2 !== '' && date == '' || moment( date ).isAfter( date2 )){
+        if (date2 !== '' && date == '' || moment(date).isAfter(date2)) {
             alert("La fecha Final no puede ser superior a la fecha inicial, vuelva a validar la informacion");
-            
-        }else{
+
+        } else {
             registers = [];
             this.validateUrl();
             waiting.destroy();
@@ -86,9 +86,9 @@ export class Waiting{
                     // {data: 'mainPhone'},
                     // {data: 'secondPhone'},
                     { data: 'eps' },
-                    {data: 'numberAuthorization'},
-                    {data: 'authorizationDateExpire'},
-                    {data: 'typeAppointment'},
+                    { data: 'numberAuthorization' },
+                    { data: 'authorizationDateExpire' },
+                    { data: 'typeAppointment' },
                     { data: 'speciality' },
                     { data: 'idInstitution' },
                 ],
@@ -101,18 +101,18 @@ export class Waiting{
 
     validateUrl(){
         let inst = parseInt($('#institution').val());
-        let date =  $('#dateInitial').val();
-        let date2 =  $('#dateFinal').val();
+        let date = $('#dateInitial').val();
+        let date2 = $('#dateFinal').val();
 
-        if ( inst == 0 && date === "") {
+        if (inst == 0 && date === "") {
             url = '';
             alert('Sino selecciona algo se mostraran todas las intituciones');
         }
 
-        if (inst !== 0 && date === "" && date2 === ""){
+        if (inst !== 0 && date === "" && date2 === "") {
             url = `&idInstitute=${inst}`;
-        }else{
-            if (date2 == '')date2 = date
+        } else {
+            if (date2 == '') date2 = date
             url = `&idInstitute=${inst}&startDate=${date}&endDate=${date2}`;
         }
         // console.log(url);
