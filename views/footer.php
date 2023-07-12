@@ -27,7 +27,7 @@
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Template Main JS File -->
-<script src="assets/js/utils.js?v1" type="text/javascript"  ></script>
+<script src="assets/js/utils.js?v3" type="text/javascript"  ></script>
 <!-- <script src="assets/js/main.js?v1" type="module"  ></script> -->
 
 <!-- Personal Templeate JS File-->

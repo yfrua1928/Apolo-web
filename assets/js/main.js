@@ -1,8 +1,12 @@
+import * as conf from '../../config/config.js';
 export class Main {
   
   constructor(){
-    
-      (() => {
+    window.addEventListener ("resize", function () { 
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
+    });
+    (() => {
     "use strict";
     /**
      * Easy selector helper function
@@ -156,7 +160,7 @@ export class Main {
 
   async getToken() {
     try {
-      let response = await axios.post("https://apolo.tramisalud.com/Api/Login").catch(err => {throw err;});
+      let response = await axios.post(conf.base+"Login").catch(err => {throw err;});
       return await response.data.accessToken;
     } catch (err) {
       return null;

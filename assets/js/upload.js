@@ -1,6 +1,7 @@
 import { Main } from './main.js';
 import { Espanol } from './utils/espanol.js';
 import { DownloadCSV } from './utils/downloadCSV.js';
+import * as conf from '../../config/config.js';
 
 var token;
 var espanol;
@@ -26,8 +27,9 @@ export class Upload{
             token = data;
             $('#files').DataTable({
                 language: espanol.espanol(),
+                pageLength: 50,
                 ajax: {
-                    url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
+                    url: `${conf.base}message/files?token=${data}`,
                     dataSrc: '',
                     error: function (xhr, error, code) {
                         alert("Inconsistencia al cargar la tabla. Error numero: "+xhr.status);
@@ -51,33 +53,31 @@ export class Upload{
 
         // Capturar Informacion del Archivo
         $('#fileImport').on('change',e => { file = e.target.files[0] });
-
         // Enviar Informacion del Archivo a la web
         $('#charge').on('click',() => { this.setDataFromFile(); })
-
         // Guardar y enviar registros a API Apolo
         $('#save').on('click',() => { this.save() });
-
         // Cerrar el modal y Vaciar datos
         $("#cancel").on('click',() => { this.closeModal() });
-
         // Descargar Datos Malos
         $('#export').on('click',()=>{ this.exportFails() })
-
+        // Descargar Plantilla
+        $('#template').on('click',async(e)=>{ this.downLoadTemplate(e) });
     }    
 
     setDataFromFile(){
-        fileModal.show();
-        this.butonsDisabled(true);
         var allowedExtensions = /(.csv)$/i;
         if (allowedExtensions.exec($('#fileImport').val())) {
+            fileModal.show();
+            this.butonsDisabled(true);
             const reader = new FileReader();
             reader.onload = () => {
                 this.validate(reader.result);
                 modalTable = $('#modalFile').DataTable({
-                    "language": espanol,
-                    "data": registers,
-                    "columns": [
+                    pageLength: 50,
+                    language: espanol.espanol(),
+                    data: registers,
+                    columns: [
                         { title: "Tipo de Documento", data: "typeDocument" },
                         { title: "Documento", data: "document" },
                         { title: "Nombre", data: "name", width: "20%" },
@@ -91,11 +91,11 @@ export class Upload{
                             function (data) {
                                 switch (data.toUpperCase()) {
                                     case "AD":
-                                        return '<i style="color:green;" data-bs-toggle="tooltip" data-bs-title="Agenda Disponible" class="fs-2 bx bx-task"></i>';
+                                        return '<span class="mensa" data-tooltip="Agenda Disponible"><i style="color:green;"  class="fs-2 bx bx-task"></i></span>';
                                     case "AND":
-                                        return '<i style="color:red;" data-bs-toggle="tooltip" data-bs-title="Agenda NO Disponible" class="fs-2 bx bx-task-x"></i>';
+                                        return '<span class="mensa" data-tooltip="Agenda No Disponible"><i style="color:red;" class="fs-2 bx bx-task-x"></i></span>';
                                     default:
-                                        return '<i style="color:blue;padding-left:3px" data-bs-toggle="tooltip" data-bs-title="Confirmacion" class="fs-4 bi bi-check-circle"></i>';
+                                        return '<span class="mensa" data-tooltip="Confirmacion"><i style="color:blue;padding-left:3px" class="fs-4 bi bi-check-circle"></i></span>';
                                 }
                             }
                         },
@@ -134,8 +134,7 @@ export class Upload{
                     elementsFail.push(item);
                     countBad++;
                 } else {
-                    let badwords = ["Documento", "Document", "document", "DOCUMENTO", "Tipo de Documento"];
-                    if (!(item in badwords)) {
+                    if (!item.includes("Documento", "Document", "document", "DOCUMENTO", "Tipo de Documento")) {
                         registers.push({
                             "cellPhone": item[0],
                             "typeDocument": item[1],
@@ -156,7 +155,6 @@ export class Upload{
             }
 
         });
-        console.log(registers);
         $('#process').val(countGood + countBad);
         $('#success').val(countGood);
         $('#failes').val(countBad);
@@ -168,7 +166,7 @@ export class Upload{
 
     save(){
         $('#sonUp').removeClass('quitCharge');
-        const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
+        const urlFile = `${conf.base}message/insert?token=${token}`
         this.butonsDisabled(true);
 
         let fileName = () => {
@@ -184,10 +182,11 @@ export class Upload{
         })
         axios.post(urlFile, JSON.stringify(data[0]), {
                 headers: {
+                    'Access-Control-Allow-Origin': '*',
                     'Content-Type': 'application/json'
                 },
         }).then(data => {
-            console.log(data.data)
+            // console.log(data.data)
             if (data.data.Status === "0001") {
                 // aqui recarga la ventana
                 alert(data.data.Message);
@@ -208,7 +207,7 @@ export class Upload{
     exportFails(){
         this.butonsDisabled(true);
         alert("Solo se puede exportar los fallos de este archivo una vez");
-        csv.arrayObjToCsv(elementsFail[0], "Fallos por registro");
+        csv.arrayObjToCsv(elementsFail, "Fallos por registro");
         $('#cancel').prop('disabled', false);
         $('#save').prop('disabled', false);
     }
@@ -228,20 +227,17 @@ export class Upload{
         modalTable.destroy();
     }
 
+    async downLoadTemplate(e){
+        e.preventDefault();
+        const response = await fetch("files/plantilla.csv");
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Formato AppointmentBooking.csv";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    }
 }
-
-//     // Descargar Plantilla
-//     $('#template').click(async (e) =>{
-//         e.preventDefault();
-//         const response = await fetch("Apolo-web/files/Formato AppointmentBooking.csv");
-//         const blob = await response.blob();
-//         const url = window.URL.createObjectURL(blob);
-//         const a = document.createElement("a");
-//         a.href = url;
-//         a.download = "Formato AppointmentBooking.csv";
-//         document.body.appendChild(a);
-//         a.click();
-//         a.remove();
-//         window.URL.revokeObjectURL(url);
-//     });
-

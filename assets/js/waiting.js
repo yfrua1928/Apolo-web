@@ -70,6 +70,7 @@ export class Waiting{
             registers.push(response.data);
             // console.log(response.data);
             waiting = $('#waiting').DataTable({
+                pageLength: 100,
                 language: espanol.espanol(),
                 data: response.data,
                 columns: [
@@ -93,6 +94,9 @@ export class Waiting{
                     { data: 'idInstitution' },
                 ],
                 order: [[1, "desc"]],
+                columnDefs: [
+                    { width: '2%', targets: 3 } // La primera columna tendrá un ancho de 200 píxeles
+                  ]
                 
             });
             $('#download').prop('disabled', false);

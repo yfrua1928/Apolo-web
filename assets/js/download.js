@@ -1,6 +1,7 @@
 import { Main } from './main.js';
 import { Espanol } from './utils/espanol.js';
 import { DownloadCSV } from './utils/downloadCSV.js';
+import * as conf from '../../config/config.js';
 
 var token;
 var espanol;
@@ -46,7 +47,7 @@ export class Download{
             language: espanol.espanol(),
             pageLength: 50,
             ajax: {
-                url: 'https://apolo-pruebas.tramisalud.com/Api/message/files?token=' + data,
+                url: `${conf.base}message/files?token=${data}`,
                 dataSrc: ''
             },
             columns: [
@@ -63,10 +64,15 @@ export class Download{
 
             columnDefs: [{target: 5, orderable: false,  data: null, 
             render: function (data, type, row, meta) {
+                let boton = '';
+                if (data.resend == 0){
+                    boton = `<a class="btn p-1 send mensa" data-tooltip="Reenviar"><i class="fs-3 bi bi-send"></i></a>
+                    <a class="btn p-1 cancel mensa" data-tooltip="Cancelar Envio"><i class="fs-3 bi bi-send-slash"></i></a>`
+                }
                 let botones = `
-                    <div class="d-flex mt-2">
-                        <a class="btn p-1 eye mensa" data-tooltip="Ver"><i class="fs-3 bi bi-eye"></i></a>
-                        <a class="btn p-1 send mensa" data-tooltip="Reenviar"><i class="fs-3 bi bi-send"></i></a>
+                    <div class="d-flex mt-2">  
+                    <a class="btn p-1 eye mensa" data-tooltip="Ver"><i class="fs-3 bi bi-eye"></i></a>
+                    ${boton}
                     </div>`;
                 return botones;
             }
@@ -77,14 +83,20 @@ export class Download{
                     if ($('#sonUp').hasClass('quitCharge')) {
                         $('#sonUp').removeClass('quitCharge');
                     }
-                    console.log(aData.idFile);
+                    // console.log(aData.idFile);
                     getDataRegisters(aData.idFile);
                 })
 
                 $(nRow).on("click", '.send',() => {
                     idGlobal = aData.idFile
-                    console.log(idGlobal);
+                    // console.log(idGlobal);
                     getDataForResend();
+                })
+
+                $(nRow).on("click", '.cancel',() => {
+                    idGlobal = aData.idFile
+                    // console.log(idGlobal);
+                    updateFile();
                 })
 
             }
@@ -99,6 +111,7 @@ export class Download{
         $('#sonUp').removeClass('quitCharge');
         getDataForResend();
     }
+
     update(){
         $('#sonUp').removeClass('quitCharge');
         butonsDisabled(true);
@@ -106,6 +119,7 @@ export class Download{
         $('#tableRegister').children('tbody').remove();
         getDataRegisters(idGlobal);
     }
+
     closeModal() {
         registers =[];
         tableRegister.destroy();
@@ -140,17 +154,21 @@ function getDataRegisters(id) {
     let con = 0;
     let can = 0;
     let canTimeOut = 0
-
-    let urlRegisters = `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${id}&token=${token}`;    
-    console.log(urlRegisters);
     axios({
             method: "POST",
-            url: urlRegisters,
+            url: `${conf.base}message/registers?identifier=${id}&token=${token}`,
         })
         .then((response) => response.data)
         .then((data) => {
-            console.log(data);
-            total = (data.length > 0)? data.length: 0;
+            // console.log(data);
+            
+            if (data.length > 0){
+                registers = data.map( item => {
+                    return [item.cellPhone, item.typeDocument, item.document, item.name, item.dateAppointment, item.appointmentHour, item.speciality, item.autorization, item.cups]
+                })
+
+                total = data.length;
+            }
             tableRegister = $('#tableRegister').DataTable({
                 language: espanol.espanol(),
                 data: data,
@@ -261,6 +279,7 @@ function setStadistics(stadistics) {
 function butonsDisabled(status) {
     if (sr >= 1){
         $('#send').prop('disabled', status);
+        $('#cancel').prop('disabled', status);
     }
     $('#export').prop('disabled', status);
     $('#update').prop('disabled', status);
@@ -270,11 +289,10 @@ function butonsDisabled(status) {
 function getDataForResend(){
     let info = new Array();
     var registers;
-    axios.get( `https://apolo-pruebas.tramisalud.com/Api/message/registers?identifier=${idGlobal}&token=${token}`)
+    axios.get(`${conf.base}message/registers?identifier=${idGlobal}&token=${token}`)
     .then(response => response.data).then(response =>{
-        registers = response.filter(item => {
-            return item.status == '1'
-        }).map(item => {
+        registers = response.filter(item => { return item.status == '1'})
+        .map(item => {
            return {
             "cellPhone": item.cellPhone,
             "typeDocument": item.typeDocument,
@@ -297,29 +315,19 @@ function getDataForResend(){
             "idUser": $('#identifier').val(),
             "data": registers
         }
-        console.log(info)
+        
     })
     .then(() =>{
         if (registers.length >= 1){
-            const urlFile = `https://apolo-pruebas.tramisalud.com/Api/message/insert?token=${token}`
-            axios.post(urlFile, JSON.stringify(info), {
+            axios.post(`${conf.base}message/insert?token=${token}`, JSON.stringify(info), {
                 headers: {
                     'Content-Type': 'application/json'
                 },
             }).then(data => {
-                console.log(data.data)
+                // console.log(data.data)
                 if (data.data.Status === "0001") {
                     // aqui recarga la ventana
-                    axios.put(`https://apolo-pruebas.tramisalud.com/Api/traceability/UpdateStatusFile?token=${token}`, JSON.stringify({"idFile":idGlobal}), {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                    }).then( data => {
-                        if (data.data.Status === "0001") {
-                            alert(data.data.Message);
-                            location.reload();
-                        }
-                    });
+                    updateFile();
                 } 
                 alert(data.data.Message);   
                 butonsDisabled(false);
@@ -334,4 +342,18 @@ function getDataForResend(){
             alert("Actualmente ya no hay registros para reenviar, actualice la tabla para ver informacion mas reciente")
         }
     })
+}
+
+function updateFile(){
+    axios.put(`${conf.base}traceability/UpdateStatusFile?token=${token}`, JSON.stringify({"idFile":idGlobal}), {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }).then( data => {
+        if (data.data.Status === "0001") {
+            alert(data.data.Message);
+            location.reload();
+        }
+    });
+
 }

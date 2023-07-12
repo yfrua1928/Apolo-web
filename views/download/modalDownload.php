@@ -8,6 +8,7 @@
                         <h3 class="modal-title" id="registerTitle"></h3>
                     </div>
                     <div class="col-2 d-flex justify-content-end">
+                        <button disabled id="cancel" type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Cancelar Envio"><i class="bi bi-send-slash"></i></button>
                         <button disabled id="send" type="button" class="btn btn-success mx-1" data-bs-toggle="tooltip" data-bs-title="Reenviar"><i class="bi bi-send"></i></button>
                         <button disabled id="export" type="submit" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-title="Descargar Documento"><i class="bi bi-cloud-download"></i></button>
                         <button disabled id="update" type="submit" class="btn btn-primary mx-1" data-bs-toggle="tooltip" data-bs-title="Actualizar Tabla"><i class="bi bi-arrow-clockwise"></i></button>
