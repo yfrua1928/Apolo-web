@@ -8,7 +8,7 @@ class LoginModel extends Model{
     }
 
     function validateLogin($user, $password) {
-        $result = parent::sendData(login.$_SESSION['token'], array('user' => $user, 'password' => $password), "POST");
+        $result = parent::sendData(base.'Users/validate?token='.$_SESSION['token'], array('user' => $user, 'password' => $password), "POST");
         if ( isset($result['id']) ){
             $_SESSION['name'] = $result['name'];
             $_SESSION['id'] = $result['id'];
@@ -30,7 +30,7 @@ class LoginModel extends Model{
 
     function updateLogin($id){
         $data = array('id' =>  $_SESSION['id'], 'lastconnection' => date('Y-m-d H:i:s'));
-        $result = parent::sendData(updateTime.$_SESSION['token'], $data, "PUT");
+        $result = parent::sendData(base.'Users/updateConetion?token='.$_SESSION['token'], $data, "PUT");
         if (!isset($result["Status"]) || $result["Status"] !== "0001" ){
             return false;
         }
@@ -38,7 +38,8 @@ class LoginModel extends Model{
     }
 
     function getDataToken(){
-        $result = parent::getData(token);
+        var_dump(base.'Login');
+        $result = parent::getData(base.'Login');
         if(isset($result["accessToken"])){
             $_SESSION['token']=$result["accessToken"];
         }

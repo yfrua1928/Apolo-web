@@ -1,6 +1,8 @@
 <?php
 include 'views/header.php';
 include 'views/menu.php';
+
+// var_dump($GLOBALS);
 ?>
 
 <section class="section dashboard">

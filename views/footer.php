@@ -27,10 +27,16 @@
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Template Main JS File -->
-<script src="assets/js/main.js" type="text/javascript"></script>
+<script src="assets/js/utils.js?v3" type="text/javascript"  ></script>
+<!-- <script src="assets/js/main.js?v1" type="module"  ></script> -->
 
 <!-- Personal Templeate JS File-->
-<?php echo (isset ($this->pathJs))?"<script src = 'assets/js/{$this->pathJs}' type='text/javascript'></script>":"";?>
+<?php 
+echo (isset ($this->pathJs))?"<script type='module'>
+        import { $this->pathJs } from './assets/js/".$GLOBALS['URL'].".js';
+        let ".$GLOBALS['URL']." = new {$this->pathJs}();
+</script>":"";
+?>
 
 <!-- Librerias de graficos -->
 <script src="assets/libs/apexcharts/apexcharts.min.js"></script>
